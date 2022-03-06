@@ -9,7 +9,6 @@ import {
   StyleSheet,
 } from "react-native";
 
-import CustomBtn from "../../components/CustomBtn";
 import Color from "../../constant/Color";
 
 export default function AuthStart(props) {
@@ -34,12 +33,15 @@ export default function AuthStart(props) {
           We wash your clothes with clean & tidy. Build Our relations with
           trust.{" "}
         </Text>
-        <CustomBtn
-          style={style.btn}
-          clicked={() => props.navigation.navigate("ChooseAuth")}
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={style.btnContainer}
+          onPress={() => props.navigation.navigate("ChooseAuth")}
         >
-          <Text style={style.btnText}>အကောင့်ဝင်ပါ</Text>
-        </CustomBtn>
+          <View style={style.btn}>
+            <Text style={style.btnText}>အကောင့်ဝင်ပါ</Text>
+          </View>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -72,9 +74,20 @@ const style = StyleSheet.create({
     width: "75%",
     textAlign: "center",
   },
-  btn: {
-    backgroundColor: Color.blue,
+  btnContainer: {
+    justifyContent: "center",
+    alignItems: "center",
     width: "70%",
+    height: 50,
+    borderRadius: 25,
+    overflow: "hidden",
+    backgroundColor: Color.blue,
+  },
+  btn: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
   },
   btnText: {
     color: "#fff",

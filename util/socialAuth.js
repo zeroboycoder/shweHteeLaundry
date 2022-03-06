@@ -2,7 +2,7 @@ import * as Google from "expo-google-app-auth";
 import * as Facebook from "expo-facebook";
 import axios from "axios";
 
-export const signInWithGoogleAsync = async () => {
+export const signInWithGoogleAsync = async (navigation) => {
   console.log("Clicked google auth");
   try {
     const response = await Google.logInAsync({
@@ -14,8 +14,12 @@ export const signInWithGoogleAsync = async () => {
     });
     console.log("Finished response");
     if (response.type === "success") {
-      const {id, name} = response.user
-      console.log(id, name)
+      const { id, name } = response.user;
+      console.log(id, name);
+      navigation.navigate("GetUserInfo", {
+        id,
+        name,
+      });
     } else {
       console.log("Failed in google auth.");
     }
@@ -24,7 +28,7 @@ export const signInWithGoogleAsync = async () => {
   }
 };
 
-export const signInWithFacebookAsync = async () => {
+export const signInWithFacebookAsync = async (navigation) => {
   console.log("Clicked facebook auth");
   try {
     await Facebook.initializeAsync({
@@ -40,6 +44,10 @@ export const signInWithFacebookAsync = async () => {
       );
       const { id, name } = result.data;
       console.log(id, name);
+      navigation.navigate("GetUserInfo", {
+        id,
+        name,
+      });
     } else {
       console.log("Fail in facebook auth.");
     }

@@ -9,9 +9,12 @@ import {
 } from "react-native";
 
 export default function CustomBtn(props) {
-  let TouchableComponent = TouchableOpacity;
-  if (Platform.OS === "android") {
-    TouchableComponent = TouchableNativeFeedback;
+  let TouchableComponent = TouchableNativeFeedback;
+  // if (Platform.OS === "android" && Platform.Version >= 21) {
+  //   TouchableComponent = TouchableNativeFeedback;
+  // }
+  if (Platform.OS === "ios") {
+    TouchableComponent = TouchableOpacity;
   }
   return (
     <View style={{ ...style.container, ...props.style }}>

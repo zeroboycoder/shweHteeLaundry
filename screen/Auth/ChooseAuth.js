@@ -13,7 +13,7 @@ import {
 import Color from "../../constant/Color";
 import * as SocialAuth from "../../util/socialAuth";
 
-export default function ChooseAuth() {
+export default function ChooseAuth(props) {
   let TouchableComponent = TouchableOpacity;
   if (Platform.OS === "android" && Platform.Version >= 21) {
     TouchableComponent = TouchableNativeFeedback;
@@ -29,7 +29,7 @@ export default function ChooseAuth() {
         <View style={style.social}>
           {/* Google Login Icon */}
           <View style={{ borderRadius: 25, overflow: "hidden" }}>
-            <TouchableComponent onPress={SocialAuth.signInWithGoogleAsync}>
+            <TouchableComponent onPress={() => SocialAuth.signInWithGoogleAsync(props.navigation)}>
               <View style={style.btnContainer}>
                 <Image
                   source={require("../../assets/image/gg_logo.png")}
@@ -43,7 +43,7 @@ export default function ChooseAuth() {
 
           {/* Facebook Login Icon */}
           <View style={{ borderRadius: 25, overflow: "hidden" }}>
-            <TouchableComponent onPress={SocialAuth.signInWithFacebookAsync}>
+            <TouchableComponent onPress={() => SocialAuth.signInWithFacebookAsync(props.navigation)}>
               <View style={style.btnContainer}>
                 <Image
                   source={require("../../assets/image/fb_logo.png")}

@@ -1,6 +1,7 @@
 {
   "expo": {
-    "name": "shweHteeLaundry",
+    "name": "Shwe Htee Laundry",
+    "description" : "This is a best laundry service.",
     "slug": "shweHteeLaundry",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -17,9 +18,13 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier" : "com.shwehtee.laundry",
+      "buildNumber" : "1.0.0",
       "supportsTablet": true
     },
     "android": {
+      "package" : "com.shwehtee.laundry",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
