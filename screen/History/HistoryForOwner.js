@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import {
+  ActivityIndicator,
+  FlatList,
   Platform,
   View,
   TouchableOpacity,
@@ -7,17 +9,86 @@ import {
   Text,
   StyleSheet,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
-import NewOrderBox from "../../components/History/OwnerNewOrderHistory";
+import Color from "../../constant/Color";
+import { onFetchOrderHistoryies } from "../../store/actions/service/order";
+import OwnerOrderBox from "../../components/History/OwnerNewOrderHistory";
 
-export default function HistoryForOwner() {
-  const allOrderHistories = useSelector((store) => store.order.orderHistories);
-  const histories = [];
-
-  console.log("All :", allOrderHistories);
-
+export default function HistoryForOwner(props) {
+  const dispatch = useDispatch();
   const [isconfirmedBtn, setIsconfirmedBtn] = useState(false);
+  const [newOrders, setNewOrders] = useState();
+  const [confirmedOrders, setConfirmedOrders] = useState();
+  const [unfinishedOrders, setUnfinishedOrders] = useState(0); // for just total description
+  const [loading, setLoading] = useState(true);
+  const [refreashing, setRefreashing] = useState(false);
+
+  const allOrderHistories = useSelector((store) => store.order.orderHistories);
+
+  // Fetch Histories
+  useEffect(() => dispatch(onFetchOrderHistoryies()), [dispatch]);
+
+  const loadHistories = useCallback(() => {
+    dispatch(onFetchOrderHistoryies());
+  }, []);
+
+  // Analyis Histories
+  const fetchHistories = () => {
+    let unfinishCounter = 0;
+    const newOrders = [];
+    const confirmedOrders = [];
+    for (const key in allOrderHistories) {
+      if (allOrderHistories[key].status === "pending") {
+        const tempArr = [];
+        tempArr.push(allOrderHistories[key]);
+        tempArr[0]["oid"] = key;
+        newOrders.unshift([...tempArr]);
+      } else {
+        const tempArr = [];
+        tempArr.push(allOrderHistories[key]);
+        tempArr[0]["oid"] = key;
+        confirmedOrders.unshift([...tempArr]);
+        if (allOrderHistories[key].status === "confirmed") unfinishCounter++;
+      }
+    }
+    setUnfinishedOrders(unfinishCounter);
+    setNewOrders(newOrders);
+    setConfirmedOrders(confirmedOrders);
+  };
+
+  // Change history based on isconfiredBtn
+  useEffect(() => {
+    setLoading(true);
+    fetchHistories();
+    setLoading(false);
+  }, [allOrderHistories]);
+
+  // Press go to order detail
+  const pressedHandler = (items) => {
+    const order = items[0];
+    // Order Id
+    const oid = order.oid;
+    const orderId = oid.substring(oid.length - 5, oid.length);
+    // Change timestamp to date & time
+    const timestamp = order.timestamp;
+    const dateString = String(new Date(timestamp).toDateString()); // 'Thu Jan 20 2022'
+    const timeString = String(new Date(timestamp).toLocaleTimeString()); // '4:29:17 AM'
+    const time = dateString + " at " + timeString;
+
+    props.navigation.navigate("orderDetail", {
+      originOrderId: oid,
+      orderId: orderId,
+      paymentType: order.paymentType,
+      status: order.status,
+      serviceName: order.serviceName,
+      time: time,
+      items: order.items,
+      totalQty: order.totalQty,
+      totalPrice: order.totalPrice,
+      userPushToken: order.userPushToken,
+    });
+  };
 
   // Create a Buttons
   let TouchableCpn = TouchableOpacity;
@@ -28,12 +99,6 @@ export default function HistoryForOwner() {
   const changeActiveBtn = (name) => {
     name === "newOrder" ? setIsconfirmedBtn(false) : setIsconfirmedBtn(true);
   };
-
-  // Create a New Order History Boxes
-  // const historyBoxes = histories.map((history) => {
-  //   console.log(history);
-  // });
-  console.log("His : ", histories);
 
   const topButtons = (
     <View style={style.btnContainer}>
@@ -78,20 +143,67 @@ export default function HistoryForOwner() {
     </View>
   );
 
-  return (
-    <View style={style.screen}>
-      {/* Top Level Buttons */}
-      {topButtons}
-      {/* Body */}
-      {/* <View style={style.body}>{historyBoxes}</View> */}
-    </View>
-  );
+  let app = <ActivityIndicator size="large" color={Color.darkBlue} />;
+  if (!loading) {
+    app = (
+      <View style={style.screen}>
+        {/* Top Level Buttons */}
+        {topButtons}
+        {/* Body */}
+        <View style={style.body}>
+          {!isconfirmedBtn ? (
+            <>
+              <Text style={style.counterText}>
+                New Orders : {newOrders.length}
+              </Text>
+              <FlatList
+                onRefresh={loadHistories}
+                refreshing={refreashing}
+                keyExtractor={(item, index) => index}
+                data={newOrders}
+                renderItem={(items) => (
+                  <OwnerOrderBox
+                    {...items.item}
+                    pressed={() => pressedHandler(items.item)}
+                  />
+                )}
+                style={{ height: "100%" }}
+              />
+            </>
+          ) : (
+            <>
+              <Text style={style.counterText}>
+                Unfinish Orders : {unfinishedOrders}
+              </Text>
+              <FlatList
+                onRefresh={loadHistories}
+                refreshing={refreashing}
+                keyExtractor={(item, index) => index}
+                data={confirmedOrders}
+                renderItem={(items) => (
+                  <OwnerOrderBox
+                    {...items.item}
+                    pressed={() => pressedHandler(items.item)}
+                  />
+                )}
+                style={{ height: "100%" }}
+              />
+            </>
+          )}
+        </View>
+      </View>
+    );
+  }
+  return app;
 }
 
 const style = StyleSheet.create({
   screen: {
     alignItems: "center",
     padding: 20,
+    backgroundColor: "#fff",
+    maxHeight: "100%",
+    paddingBottom: 64,
   },
   btnContainer: {
     flexDirection: "row",
@@ -122,6 +234,11 @@ const style = StyleSheet.create({
   },
   activeText: {
     color: "#fff",
+  },
+  counterText: {
+    marginBottom: 2,
+    fontSize: 14,
+    fontFamily: "pyidaungsu-bold",
   },
   body: {
     width: "100%",

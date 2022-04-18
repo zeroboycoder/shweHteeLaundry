@@ -38,7 +38,7 @@ export default (props) => {
       <AppLoading
         startAsync={fetchFont}
         onFinish={() => setLoadFont(true)}
-        onError={(err) => console.log(err)}
+        onError={(err) => console.log("Err : ", err)}
       />
     );
   }

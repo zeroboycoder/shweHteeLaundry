@@ -19,6 +19,8 @@ import { onAuth } from "../../store/actions/user/auth";
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
   }),
 });
 

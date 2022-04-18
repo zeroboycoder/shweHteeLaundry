@@ -1,33 +1,115 @@
-import React from "react";
-import { Dimensions, View, StyleSheet } from "react-native";
+import React, { useState, useCallback } from "react";
+import {
+  Dimensions,
+  RefreshControl,
+  View,
+  ScrollView,
+  StyleSheet,
+} from "react-native";
+import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
 
 import OrderDetail from "../../components/Home/OrderDetail";
+import { onFetchOrderHistoryies } from "../../store/actions/service/order";
+import { addNoti } from "../../store/actions/service/noti";
+import { sentPushNoti } from "../../util/noti";
 
 export default function Checkout(props) {
+  const dispatch = useDispatch();
+  const uid = useSelector((state) => state.auth.uid);
+  const [refreash, setSrefreash] = useState(false);
+  const [curStatus, setCurStatus] = useState(props.route.params.status);
   const {
+    originOrderId,
     orderId,
     time,
+    paymentType,
     serviceName,
-    status,
     items,
     totalQty,
     totalPrice,
+    userPushToken,
     fromHistory,
   } = props.route.params;
+
+  // Load specific history
+  const loadHistories = useCallback(async () => {
+    dispatch(onFetchOrderHistoryies());
+  }, []);
+
+  const confirmedHandler = async () => {
+    const res = await axios.get(
+      `https://shwe-htee-laundry-default-rtdb.asia-southeast1.firebasedatabase.app/orders/${originOrderId}.json`
+    );
+    const data = res.data;
+    data.paymentConfirmed = true;
+    data.status = "confirmed";
+    setCurStatus("confirmed"); // change current status
+    await axios.put(
+      `https://shwe-htee-laundry-default-rtdb.asia-southeast1.firebasedatabase.app/orders/${originOrderId}.json`,
+      data
+    );
+    // Sent Push Notification to user
+    sentPushNoti(
+      userPushToken,
+      "Confirmed Your Payment",
+      "Your payment is confirmed..."
+    );
+    // Add Noti to database
+    const notiData = {
+      uid: uid,
+      msg: {
+        oid: originOrderId,
+        msg: "Your Payment is confirmed!!!",
+        timestamp: new Date().getTime(),
+        imgCode: "confirmed",
+        touched: false,
+      },
+    };
+    dispatch(addNoti(notiData));
+  };
+
+  const finishedHandler = async () => {
+    const res = await axios.get(
+      `https://shwe-htee-laundry-default-rtdb.asia-southeast1.firebasedatabase.app/orders/${originOrderId}.json`
+    );
+    const data = res.data;
+    data.status = "finished";
+    setCurStatus("finished"); // change current status
+    await axios.put(
+      `https://shwe-htee-laundry-default-rtdb.asia-southeast1.firebasedatabase.app/orders/${originOrderId}.json`,
+      data
+    );
+    // Sent Push Notification to user
+    sentPushNoti(
+      userPushToken,
+      "Finished Your Order",
+      "Your order is finished..."
+    );
+  };
+
   return (
     <View style={style.screen}>
-      <View style={style.container}>
+      <ScrollView
+        contentContainerStyle={style.container}
+        refreshControl={
+          <RefreshControl refreshing={refreash} onRefresh={loadHistories} />
+        }
+      >
         <OrderDetail
           orderId={orderId}
           time={time}
+          paymentType={paymentType}
           serviceName={serviceName}
-          status={status}
+          status={curStatus}
           items={items}
           totalQty={totalQty}
           totalPrice={totalPrice}
           fromHistory={fromHistory}
+          confirmedHandler={confirmedHandler}
+          finishedHandler={finishedHandler}
         />
-      </View>
+      </ScrollView>
     </View>
   );
 }

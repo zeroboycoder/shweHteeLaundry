@@ -8,7 +8,10 @@ const initState = {
 export default (state = initState, action) => {
   switch (action.type) {
     case ADD_ORDER: {
-      return state;
+      return {
+        orderHistories: state.orderHistories.unshift(action.data),
+        ...state,
+      };
     }
     case FETCH_ORDER_HISTORIES: {
       return {

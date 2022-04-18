@@ -33,7 +33,9 @@ import Notification from "../screen/Notification/Noti";
 // Profile Screen
 import Profile, { ProfileNavOptions } from "../screen/Profile/Profile";
 // Logout Screen
-import Logout from "../screen/Logut/Logout";
+import Logout from "../screen/Logout/Logout";
+// Onboarding
+import Onboarding from "../screen/Onboarding/Onboarding";
 
 const Stack = createStackNavigator();
 
@@ -58,6 +60,15 @@ export const AuthNavigator = () => {
       <Stack.Screen name="AuthStart" component={AuthStart} />
       <Stack.Screen name="ChooseAuth" component={ChooseAuth} />
       <Stack.Screen name="GetUserInfo" component={GetUserInfo} />
+    </Stack.Navigator>
+  );
+};
+
+// Stack Navigator for Onboarding
+export const OnboardingNavigator = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Onboarding" component={Onboarding} />
     </Stack.Navigator>
   );
 };

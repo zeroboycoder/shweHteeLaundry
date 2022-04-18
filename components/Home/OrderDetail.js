@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
+import { Alert, TouchableOpacity, View, Text, StyleSheet } from "react-native";
 
 import Color from "../../constant/Color";
 
@@ -13,6 +13,30 @@ import Color from "../../constant/Color";
 // totalPrice => number
 // fromHistory => bool
 export default function CheckoutBox(props) {
+  // Payment Confirm Handler
+  const confirmedHandler = () => {
+    Alert.alert("Are you sure?", "Are you sure payment confirm?", [
+      { text: "Cancel", style: "destructive" },
+      {
+        text: "Confirm",
+        style: "default",
+        onPress: props.confirmedHandler,
+      },
+    ]);
+  };
+
+  // Order Finish Handler
+  const finishedHandler = () => {
+    Alert.alert("Are you sure?", "Are you sure this order is finished?", [
+      { text: "Cancel", style: "destructive" },
+      {
+        text: "Finish",
+        style: "default",
+        onPress: props.finishedHandler,
+      },
+    ]);
+  };
+
   const items = props.items.map((item) => (
     <View key={item.id} style={style.row}>
       <View>
@@ -28,11 +52,7 @@ export default function CheckoutBox(props) {
   ));
 
   // check the status condition
-  let status = (
-    <View style={style.delivered}>
-      <Text style={style.statusText}>Delivered</Text>
-    </View>
-  );
+  let status;
   if (props.status === "pending") {
     status = (
       <View style={style.pending}>
@@ -40,59 +60,96 @@ export default function CheckoutBox(props) {
       </View>
     );
   }
+  if (props.status === "confirmed") {
+    status = (
+      <View style={style.confirmed}>
+        <Text style={style.statusText}>Confirmed</Text>
+      </View>
+    );
+  }
+  if (props.status === "finished") {
+    status = (
+      <View style={style.finished}>
+        <Text style={style.statusText}>Finished</Text>
+      </View>
+    );
+  }
 
   return (
-    <View style={style.container}>
-      {/* Top Row */}
-      <View style={style.topRow}>
-        <View style={style.firstCol}>
-          <Text style={style.orderDetail}>Order Detail</Text>
-          {props.orderId && (
-            <Text style={style.oid}>Order Id : {props.orderId}</Text>
-          )}
-          {props.time && <Text style={style.date}>{props.time}</Text>}
+    <View style={style.screen}>
+      <View style={style.container}>
+        {/* Top Row */}
+        <View style={style.topRow}>
+          <View style={style.firstCol}>
+            <Text style={style.orderDetail}>Order Detail</Text>
+            {props.orderId && (
+              <Text style={style.oid}>Order Id : {props.orderId}</Text>
+            )}
+            {props.time && <Text style={style.date}>{props.time}</Text>}
+            {props.paymentType && (
+              <Text style={style.date}>Payment : {props.paymentType}</Text>
+            )}
+          </View>
+          <View style={style.secondCol}>{props.status && status}</View>
         </View>
-        <View style={style.secondCol}>{props.status && status}</View>
-      </View>
 
-      {/* Service Name */}
-      <View>
-        <Text style={style.serName}>{props.serviceName}</Text>
-      </View>
+        {/* Service Name */}
+        <View>
+          <Text style={style.serName}>{props.serviceName}</Text>
+        </View>
 
-      {/* Item Detail */}
-      <View style={style.row}>
-        <View>
-          <Text style={style.subTitle}>Items</Text>
+        {/* Item Detail */}
+        <View style={style.row}>
+          <View>
+            <Text style={style.subTitle}>Items</Text>
+          </View>
+          <View>
+            <Text style={{ ...style.qtyText, ...style.subTitle }}>
+              Quentity
+            </Text>
+          </View>
+          <View>
+            <Text style={style.subTitle}>Price</Text>
+          </View>
         </View>
-        <View>
-          <Text style={{ ...style.qtyText, ...style.subTitle }}>Quentity</Text>
-        </View>
-        <View>
-          <Text style={style.subTitle}>Price</Text>
-        </View>
-      </View>
-      {items}
-      <View style={style.brakeLine}></View>
+        {items}
+        <View style={style.brakeLine}></View>
 
-      {/* Total */}
-      <View style={style.row}>
-        <View>
-          <Text style={style.text}>Total</Text>
+        {/* Total */}
+        <View style={style.row}>
+          <View>
+            <Text style={style.text}>Total</Text>
+          </View>
+          <View>
+            <Text style={style.qtyText}>{props.totalQty}</Text>
+          </View>
+          <View>
+            <Text style={style.text}>{props.totalPrice} Ks</Text>
+          </View>
         </View>
-        <View>
-          <Text style={style.qtyText}>{props.totalQty}</Text>
-        </View>
-        <View>
-          <Text style={style.text}>{props.totalPrice} Ks</Text>
-        </View>
-      </View>
 
-      {/* Payment Button */}
-      {props.pressed && (
-        <View style={style.btnContainer}>
-          <TouchableOpacity style={style.btn} onPress={props.pressed}>
-            <Text>Payment</Text>
+        {/* Payment Button */}
+        {props.pressed && (
+          <View style={style.btnContainer}>
+            <TouchableOpacity style={style.btn} onPress={props.pressed}>
+              <Text style={style.btnText}>Payment</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </View>
+      {/* Payment Confirmed && To Press Finish Order */}
+      {props.status === "pending" && (
+        <View style={{ ...style.finishedBtn }}>
+          <TouchableOpacity style={style.btn} onPress={confirmedHandler}>
+            <Text style={style.btnText}>Payment Confirm</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+      {/* Payment Confirmed && To Press Finish Order */}
+      {props.status === "confirmed" && (
+        <View style={{ ...style.finishedBtn }}>
+          <TouchableOpacity style={style.btn} onPress={finishedHandler}>
+            <Text style={style.btnText}>Finish Order</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -101,6 +158,11 @@ export default function CheckoutBox(props) {
 }
 
 const style = StyleSheet.create({
+  screen: {
+    flex: 1,
+    justifyContent: "center",
+    alignContent: "center",
+  },
   container: {
     backgroundColor: "#fff",
     width: "80%",
@@ -143,12 +205,21 @@ const style = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  delivered: {
+  confirmed: {
     justifyContent: "center",
     alignItems: "center",
-    padding: 3,
+    paddingHorizontal: 6,
+    paddingVertical: 4,
     borderWidth: 1,
-    borderColor: Color.darkBlue,
+    borderColor: Color.orange,
+  },
+  finished: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 6,
+    paddingVertical: 4,
+    borderWidth: 1,
+    borderColor: "#357C3C",
   },
   pending: {
     justifyContent: "center",
@@ -193,10 +264,19 @@ const style = StyleSheet.create({
   btnContainer: {
     justifyContent: "center",
     alignItems: "center",
-    width: "70%",
     height: 46,
     marginTop: 16,
-    marginLeft: "15%",
+    borderWidth: 1,
+    borderColor: Color.darkBlue,
+    borderRadius: 5,
+  },
+  finishedBtn: {
+    justifyContent: "center",
+    alignItems: "center",
+    maxWidth: "100%",
+    height: 46,
+    marginTop: 16,
+    marginHorizontal: "10%",
     borderWidth: 1,
     borderColor: Color.darkBlue,
     borderRadius: 5,
@@ -205,5 +285,9 @@ const style = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
+    height: "100%",
+  },
+  btnText: {
+    fontFamily: "pyidaungsu-bold",
   },
 });

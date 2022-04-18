@@ -5,12 +5,14 @@ export const FETCH_ORDER_HISTORIES = "FETCH_ORDER_HISTORIES";
 
 export const onAddOrder =
   (items, serviceName, paymentType) => async (dispatch, getState) => {
-    const { uid, uname, userPushToken } = getState().auth;
+    const { uid, uname, phno, address, userPushToken } = getState().auth;
     const { totalQty, totalPrice } = getState().item;
     const status = "pending";
     const data = {
       uid,
       uname,
+      phno,
+      address,
       userPushToken,
       serviceName,
       paymentType,
@@ -19,8 +21,9 @@ export const onAddOrder =
       totalPrice,
       status,
       timestamp: new Date().getTime(),
+      paymentConfirmed: false,
+      status: "pending",
     };
-    console.log("Reach order action");
     try {
       const response = await axios.post(
         "https://shwe-htee-laundry-default-rtdb.asia-southeast1.firebasedatabase.app/orders.json",

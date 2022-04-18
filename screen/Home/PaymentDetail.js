@@ -11,10 +11,12 @@ import {
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import * as Clipboard from "expo-clipboard";
+import * as Notifications from "expo-notifications";
 import { showMessage, hideMessage } from "react-native-flash-message";
-import PaymentDescBox from "../../components/Home/PaymentDescBox";
 
+import PaymentDescBox from "../../components/Home/PaymentDescBox";
 import { onAddOrder } from "../../store/actions/service/order";
+import { sentPushNoti, schedulePushNotification } from "../../util/noti";
 
 export default function PaymentDetail(props) {
   const dispatch = useDispatch();
@@ -33,12 +35,34 @@ export default function PaymentDetail(props) {
     });
   };
 
+  // Schdult Notification
+  const triggerNotificationHandler = () => {
+    Notifications.scheduleNotificationAsync({
+      content: {
+        title: "Local Noti",
+        body: "This is a notification locally",
+      },
+      trigger: {
+        seconds: 5,
+      },
+    });
+  };
+
   const openTheApp = () => {
     // Open an app in play store
     const canOpen = Linking.canOpenURL(datas.appUrl);
     if (canOpen) {
-      addOrderHandler();
-      Linking.openURL(datas.appUrl);
+      // addOrderHandler();
+      // Linking.openURL(datas.appUrl);
+      // Sent local notification to customer
+      // schedulePushNotification("Shwe Htee", "Your order is send to owner!!!");
+      triggerNotificationHandler();
+      // Sent push notification to owner
+      // sentPushNoti(
+      //   "ExponentPushToken[Y_r2ggPzoKeArmgf4OQqYN]",
+      //   "Shwe Htee",
+      //   "Receive New Order!"
+      // );
     } else {
       Alert.alert(
         "Can't open",

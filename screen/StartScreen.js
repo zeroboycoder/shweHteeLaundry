@@ -17,7 +17,6 @@ class StartScreen extends Component {
     }
 
     this.props.onAuth(JSON.parse(userDatas));
-    // dispatch(onAuth(token, JSON.parse(userDatas)));
   };
 
   componentDidMount() {

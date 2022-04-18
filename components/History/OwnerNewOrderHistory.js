@@ -10,7 +10,18 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
-export default function OwnerNewOrderHistory() {
+export default function OwnerNewOrderHistory(props) {
+  // Get Datas from props
+  const datas = props[0];
+  const oid = datas.oid;
+  const orderId = oid.substring(oid.length - 5, oid.length);
+  const status = datas.status;
+  // Change timestamp to date & time
+  const timestamp = datas.timestamp;
+  const dateString = String(new Date(timestamp).toDateString()); // 'Thu Jan 20 2022'
+  const timeString = String(new Date(timestamp).toLocaleTimeString()); // '4:29:17 AM'
+  const time = dateString + " at " + timeString;
+
   let TouchableCpn = TouchableOpacity;
   if (Platform.OS === "android" && Platform.Version >= 21) {
     TouchableCpn = TouchableNativeFeedback;
@@ -33,12 +44,18 @@ export default function OwnerNewOrderHistory() {
 
   return (
     <View style={{ width: "100%" }}>
-      <TouchableCpn>
-        <View style={style.container}>
+      <TouchableCpn onPress={props.pressed}>
+        <View
+          style={
+            status == "finished"
+              ? { ...style.container }
+              : { ...style.container, ...style.unfinishContainer }
+          }
+        >
           <View style={style.row}>
-            <Text style={style.name}>Pyae Sone Khant</Text>
+            <Text style={style.name}>{datas.uname}</Text>
             <View style={style.row}>
-              <Text style={style.date}>21 December 2021 at 5:00 PM</Text>
+              <Text style={style.date}>{time}</Text>
               <MaterialIcons
                 name="delete"
                 size={22}
@@ -49,20 +66,33 @@ export default function OwnerNewOrderHistory() {
             </View>
           </View>
           <View style={style.colAsRow}>
-            <Text style={style.infoText}>Order Id : 1234</Text>
-            <Text style={style.infoText}>Phone No : 09764704270</Text>
-            <Text style={style.infoText}>Address : Shwe Nat Taug</Text>
+            <Text style={style.infoText}>Order Id : {orderId}</Text>
+            <Text style={style.infoText}>Phone No : {datas.phno}</Text>
+            <Text style={style.infoText}>Address : {datas.address}</Text>
+            <Text style={style.infoText}>Payment : {datas.paymentType}</Text>
           </View>
           <View style={style.row}>
-            <Text style={style.serviceText}>Wash & Iron</Text>
-            <Text style={style.serviceText}>20 clothes</Text>
-            <Text style={style.serviceText}>1100Ks</Text>
+            <Text style={style.serviceText}>{datas.serviceName}</Text>
+            <Text style={style.serviceText}>{datas.totalQty} clothes</Text>
+            <Text style={style.serviceText}>{datas.totalPrice} Ks</Text>
           </View>
-          <View style={style.row}>
-            <View style={style.statusContainer}>
-              <Text style={style.status}>Payment Confirm</Text>
+          {datas.paymentConfirmed === true && status === "confirmed" && (
+            <View style={style.row}>
+              <View style={style.statusContainer}>
+                <Text style={style.status}>Payment Confirmed</Text>
+              </View>
             </View>
-          </View>
+          )}
+          {datas.paymentConfirmed === true && status == "finished" && (
+            <View style={style.row}>
+              <View style={style.statusContainer}>
+                <Text style={style.status}>Payment Confirmed</Text>
+              </View>
+              <View style={style.statusContainer}>
+                <Text style={style.status}>Order Confirmed</Text>
+              </View>
+            </View>
+          )}
         </View>
       </TouchableCpn>
     </View>
@@ -72,10 +102,15 @@ export default function OwnerNewOrderHistory() {
 const style = StyleSheet.create({
   container: {
     width: "100%",
-    backgroundColor: "#dcdcdc",
+    backgroundColor: "#eaeaea",
     padding: 12,
     borderRadius: 12,
     marginVertical: 8,
+  },
+  unfinishContainer: {
+    backgroundColor: "#ccc",
+    borderColor: "#777",
+    borderWidth: 1,
   },
   row: {
     flexDirection: "row",
