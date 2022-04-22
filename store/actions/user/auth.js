@@ -3,6 +3,7 @@ import axios from "axios";
 export const TRIED_LOGIN = "TRIED_LOGIN";
 export const AUTH = "AUTH";
 export const LOGOUT = "LOGOUT";
+export const ONBOARDING = "ONBOARDING";
 
 export const onAuth = (userDatas) => async (dispatch) => {
   const uid = userDatas.uid;
@@ -31,4 +32,8 @@ export const onTriedLogin = () => ({ type: TRIED_LOGIN });
 export const onLogout = () => (dispatch) => {
   console.log("Reach logout");
   dispatch({ type: LOGOUT });
+};
+
+export const onboarding = () => (dispatch) => {
+  dispatch({ type: ONBOARDING, value: true });
 };

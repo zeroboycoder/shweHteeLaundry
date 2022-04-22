@@ -3,7 +3,7 @@ import { ActivityIndicator, View, Text, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { connect } from "react-redux";
 
-import { onAuth, onTriedLogin } from "../store/actions/user/auth";
+import { onAuth, onTriedLogin, onboarding } from "../store/actions/user/auth";
 import Color from "../constant/Color";
 
 class StartScreen extends Component {
@@ -41,6 +41,7 @@ class StartScreen extends Component {
 const dispatchToProps = (dispatch) => ({
   onAuth: (userDatas) => dispatch(onAuth(userDatas)),
   onTriedLogin: () => dispatch(onTriedLogin()),
+  onboarding: () => dispatch(onboarding()),
 });
 
 const styles = StyleSheet.create({

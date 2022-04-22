@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { AUTH, TRIED_LOGIN, LOGOUT } from "../../actions/user/auth";
+import { AUTH, TRIED_LOGIN, LOGOUT, ONBOARDING } from "../../actions/user/auth";
 
 const initState = {
   uid: "",
@@ -10,6 +10,7 @@ const initState = {
   address: "",
   userPushToken: "",
   triedLogin: false,
+  onboarding: false,
 };
 
 export default (state = initState, action) => {
@@ -40,6 +41,13 @@ export default (state = initState, action) => {
       AsyncStorage.removeItem("token");
       AsyncStorage.removeItem("userDatas");
       return initState;
+    }
+    case ONBOARDING: {
+      AsyncStorage.setItem("onboarding", JSON.stringify({ value: true }));
+      return {
+        ...state,
+        onboarding: true,
+      };
     }
     default:
       return state;

@@ -2,15 +2,25 @@ import React from "react";
 import {
   View,
   Text,
+  TouchableOpacity,
   StyleSheet,
   Image,
   useWindowDimensions,
 } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
+import { useDispatch } from "react-redux";
 
-import Color from "../../constant/Color";
+import { onboarding } from "../../store/actions/user/auth";
 
 export default function OnboradingItem(props) {
+  const dispatch = useDispatch();
   const { width } = useWindowDimensions();
+
+  // End click handler
+  const onboardingHandler = () => {
+    dispatch(onboarding());
+  };
+
   return (
     <View style={[style.container, { width }]}>
       <View style={style.titleBox}>
@@ -25,6 +35,16 @@ export default function OnboradingItem(props) {
       <View style={style.descBox}>
         <Text style={style.desc}>{props.item.desc}</Text>
       </View>
+
+      {/* End Onboarding and go to home screen */}
+      {props.item.isEnd ? (
+        <TouchableOpacity
+          style={style.iconContainer}
+          onPress={onboardingHandler}
+        >
+          <AntDesign name="arrowright" size={24} color="#0016DA" />
+        </TouchableOpacity>
+      ) : null}
     </View>
   );
 }
@@ -65,5 +85,18 @@ const style = StyleSheet.create({
   desc: {
     fontFamily: "pyidaungsu",
     textAlign: "center",
+  },
+  iconContainer: {
+    position: "absolute",
+    bottom: 0,
+    right: 16,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: 50,
+    height: 50,
+    borderWidth: 1,
+    borderColor: "#0016DA",
+    borderRadius: 50,
   },
 });
