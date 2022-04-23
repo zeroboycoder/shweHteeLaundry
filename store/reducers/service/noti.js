@@ -14,6 +14,6 @@ export default (state = initState, action) => {
         notis: action.data,
       };
     default:
-      state;
+      return state;
   }
 };

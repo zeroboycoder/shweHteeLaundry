@@ -12,12 +12,14 @@ import RootNavigator from "./navigation/RootNavigator";
 import authReducer from "./store/reducers/user/auth";
 import itemReducer from "./store/reducers/service/item";
 import orderReducer from "./store/reducers/service/order";
+import notiReducer from "./store/reducers/service/noti";
 
 // Create a root reducer and store, and apply middleware(thunk)
 const rootReduer = combineReducers({
   auth: authReducer,
   item: itemReducer,
   order: orderReducer,
+  noti: notiReducer,
 });
 
 const store = createStore(rootReduer, applyMiddleware(thunk));

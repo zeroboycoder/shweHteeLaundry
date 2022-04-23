@@ -30,6 +30,7 @@ import HistoryForOwner from "../screen/History/HistoryForOwner";
 import OrderDetail from "../screen/History/OrderDetail";
 // Notification
 import Notification from "../screen/Notification/Noti";
+import NotiOrderDetail from "../screen/Notification/NotiOrderDetail";
 // Profile Screen
 import Profile, { ProfileNavOptions } from "../screen/Profile/Profile";
 // Logout Screen
@@ -136,6 +137,11 @@ const NotiNavigator = () => {
         name="noti"
         component={Notification}
         options={{ headerTitle: "Notification" }}
+      />
+      <Stack.Screen
+        name="notiOrderDetail"
+        component={NotiOrderDetail}
+        options={{ headerTitle: "Order Detail" }}
       />
     </Stack.Navigator>
   );
@@ -257,7 +263,7 @@ const CustomDrawerContent = (props) => (
           marginTop: 7,
         }}
       >
-        Pyae Sone Khant
+        {props.uname}
       </Text>
     </View>
     <DrawerItemList {...props} />
@@ -265,11 +271,13 @@ const CustomDrawerContent = (props) => (
 );
 
 export const DrawerNavigator = () => {
-  const admin = useSelector((store) => store.auth.admin);
+  const { admin, uname } = useSelector((store) => store.auth);
   return (
     <Drawer.Navigator
       screenOptions={() => drawerScreenOptions(admin)}
-      drawerContent={(props) => <CustomDrawerContent {...props} />}
+      drawerContent={(props) => (
+        <CustomDrawerContent {...props} uname={uname} />
+      )}
     >
       <Drawer.Screen
         name="HomeDrawer"

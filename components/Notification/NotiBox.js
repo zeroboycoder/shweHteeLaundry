@@ -1,28 +1,65 @@
 import React from "react";
-import { Image, View, Text, StyleSheet } from "react-native";
+import {
+  Image,
+  View,
+  Text,
+  TouchableOpacity,
+  TouchableNativeFeedback,
+  StyleSheet,
+} from "react-native";
 
 const dummyDatas = {
   onTheWay: require("../../assets/image/noti/ontheway.png"),
   prepared: require("../../assets/image/noti/prepared.png"),
 };
 
-export default function NotiBox() {
+export default function NotiBox({ data }) {
+  // Shortform of order id
+  const oid = data.oid;
+  const orderId = oid.substring(oid.length - 5, oid.length);
+  // Change timestamp to date & time
+  const timestamp = data.timestamp;
+  const dateString = String(new Date(timestamp).toDateString()); // 'Thu Jan 20 2022'
+  const timeString = String(new Date(timestamp).toLocaleTimeString()); // '4:29:17 AM'
+  const time = dateString + " at " + timeString;
+
+  let TouchableCpn = TouchableOpacity;
+  if (Platform.OS === "android" && Platform.Version >= 21) {
+    TouchableCpn = TouchableNativeFeedback;
+  }
+
   return (
-    <View style={style.container}>
-      <View style={style.firstCol}>
-        <Text style={style.date}>21 December 2021 at 5:00 PM</Text>
-        <View style={style.imgContainer}>
-          <Image
-            source={dummyDatas.prepared}
-            alt="On the way"
-            style={style.img}
-          />
+    <View style={{ width: "100%" }}>
+      <TouchableCpn onPress={() => props.pressed(oid)}>
+        <View
+          style={
+            data.touched ? style.container : [style.container, style.untouched]
+          }
+        >
+          <View style={style.firstCol}>
+            <Text style={style.date}>{time}</Text>
+            <View style={style.imgContainer}>
+              {data.imgCode === "confirmed" ? (
+                <Image
+                  source={dummyDatas.prepared}
+                  alt="Being prepared"
+                  style={style.img}
+                />
+              ) : (
+                <Image
+                  source={dummyDatas.onTheWay}
+                  alt="On the way"
+                  style={style.img}
+                />
+              )}
+            </View>
+          </View>
+          <View style={style.secondCol}>
+            <Text style={style.text}>Order Id : {orderId}</Text>
+            <Text style={style.text}>{data.msg}</Text>
+          </View>
         </View>
-      </View>
-      <View style={style.secondCol}>
-        <Text style={style.text}>Order Id : 1234</Text>
-        <Text style={style.text}>Your order is received & being prepared.</Text>
-      </View>
+      </TouchableCpn>
     </View>
   );
 }
@@ -35,6 +72,13 @@ const style = StyleSheet.create({
     paddingTop: 10,
     paddingHorizontal: 10,
     paddingBottom: 7,
+    marginVertical: 7,
+    backgroundColor: "#fafafa",
+  },
+  untouched: {
+    backgroundColor: "#e3e3e3",
+    borderColor: "#777",
+    borderWidth: 1,
   },
   firstCol: {
     flex: 0.5,

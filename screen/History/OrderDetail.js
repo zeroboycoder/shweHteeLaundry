@@ -16,10 +16,10 @@ import { sentPushNoti } from "../../util/noti";
 
 export default function Checkout(props) {
   const dispatch = useDispatch();
-  const uid = useSelector((state) => state.auth.uid);
   const [refreash, setSrefreash] = useState(false);
   const [curStatus, setCurStatus] = useState(props.route.params.status);
   const {
+    uid,
     originOrderId,
     orderId,
     time,
@@ -86,6 +86,18 @@ export default function Checkout(props) {
       "Finished Your Order",
       "Your order is finished..."
     );
+    // Add Noti to database
+    const notiData = {
+      uid: uid,
+      msg: {
+        oid: originOrderId,
+        msg: "Your Order is finished!!!",
+        timestamp: new Date().getTime(),
+        imgCode: "finished",
+        touched: false,
+      },
+    };
+    dispatch(addNoti(notiData));
   };
 
   return (

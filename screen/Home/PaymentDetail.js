@@ -35,34 +35,20 @@ export default function PaymentDetail(props) {
     });
   };
 
-  // Schdult Notification
-  const triggerNotificationHandler = () => {
-    Notifications.scheduleNotificationAsync({
-      content: {
-        title: "Local Noti",
-        body: "This is a notification locally",
-      },
-      trigger: {
-        seconds: 5,
-      },
-    });
-  };
-
   const openTheApp = () => {
     // Open an app in play store
     const canOpen = Linking.canOpenURL(datas.appUrl);
     if (canOpen) {
-      // addOrderHandler();
-      // Linking.openURL(datas.appUrl);
-      // Sent local notification to customer
-      // schedulePushNotification("Shwe Htee", "Your order is send to owner!!!");
-      triggerNotificationHandler();
+      addOrderHandler();
+      Linking.openURL(datas.appUrl);
+      // Sent local notification to customer (themself)
+      schedulePushNotification("Shwe Htee", "Your order is send to owner!!!");
       // Sent push notification to owner
-      // sentPushNoti(
-      //   "ExponentPushToken[Y_r2ggPzoKeArmgf4OQqYN]",
-      //   "Shwe Htee",
-      //   "Receive New Order!"
-      // );
+      sentPushNoti(
+        "ExponentPushToken[Q5V-mfCqzgmsNsfPVUwlNV]",
+        "Shwe Htee",
+        "Receive New Order!"
+      );
     } else {
       Alert.alert(
         "Can't open",

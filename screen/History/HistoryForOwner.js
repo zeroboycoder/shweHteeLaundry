@@ -77,6 +77,7 @@ export default function HistoryForOwner(props) {
     const time = dateString + " at " + timeString;
 
     props.navigation.navigate("orderDetail", {
+      uid: order.uid,
       originOrderId: oid,
       orderId: orderId,
       paymentType: order.paymentType,

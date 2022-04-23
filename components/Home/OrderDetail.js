@@ -11,7 +11,7 @@ import Color from "../../constant/Color";
 // items => array
 // totalQty => number
 // totalPrice => number
-// fromHistory => bool
+// fromNoti => bool
 export default function CheckoutBox(props) {
   // Payment Confirm Handler
   const confirmedHandler = () => {
@@ -129,7 +129,7 @@ export default function CheckoutBox(props) {
         </View>
 
         {/* Payment Button */}
-        {props.pressed && (
+        {props.pressed && !fromNoti && (
           <View style={style.btnContainer}>
             <TouchableOpacity style={style.btn} onPress={props.pressed}>
               <Text style={style.btnText}>Payment</Text>
