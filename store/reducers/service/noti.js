@@ -1,4 +1,4 @@
-import { ADD_NOTI, FETCH_NOTI } from "../../actions/service/noti";
+import { ADD_NOTI, UPDATE_NOTI, FETCH_NOTI } from "../../actions/service/noti";
 
 const initState = {
   notis: [],
@@ -7,6 +7,14 @@ const initState = {
 export default (state = initState, action) => {
   switch (action.type) {
     case ADD_NOTI: {
+    }
+    case UPDATE_NOTI: {
+      const updateNotis = { ...state.notis };
+      updateNotis[action.notiId].touched = true;
+      return {
+        ...state,
+        notis: updateNotis,
+      };
     }
     case FETCH_NOTI:
       return {

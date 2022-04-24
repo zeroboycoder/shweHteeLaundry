@@ -20,9 +20,7 @@ export default (props) => {
 
   useEffect(async () => {
     const onboardingJsonStr = await AsyncStorage.getItem("onboarding"); // null or value
-    console.log(onboardingJsonStr);
     if (onboardingJsonStr !== null) {
-      console.log("Onboarding is not null");
       dispatch(onboardingAction());
     }
   }, []);

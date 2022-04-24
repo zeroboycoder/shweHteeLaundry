@@ -20,7 +20,8 @@ export default function History(props) {
   // Order History Box
   const historyBox = [];
   for (const key in orderHistories) {
-    const orderId = key.substring(key.length - 5, key.length);
+    const oid = orderHistories[key].oid;
+    const orderId = oid.substring(oid.length - 5, oid.length);
     // Change timestamp to date & time
     const timestamp = orderHistories[key].timestamp;
     const dateString = String(new Date(timestamp).toDateString()); // 'Thu Jan 20 2022'

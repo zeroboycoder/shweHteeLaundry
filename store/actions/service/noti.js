@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export const ADD_NOTI = "ADD_NOTI";
+export const UPDATE_NOTI = "UPDATE_NOTI";
 export const FETCH_NOTI = "FETCH_NOTI";
 
 export const addNoti = (data) => async (dispatch) => {
@@ -13,6 +14,17 @@ export const addNoti = (data) => async (dispatch) => {
   dispatch({
     type: ADD_NOTI,
     msg,
+  });
+};
+
+export const updateNoti = (uid, notiId) => async (dispatch) => {
+  await axios.patch(
+    `https://shwe-htee-laundry-default-rtdb.asia-southeast1.firebasedatabase.app/notis/${uid}/${notiId}.json`,
+    { touched: true }
+  );
+  dispatch({
+    type: UPDATE_NOTI,
+    notiId,
   });
 };
 

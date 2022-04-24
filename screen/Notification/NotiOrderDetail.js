@@ -3,18 +3,34 @@ import { Dimensions, View, Text, StyleSheet } from "react-native";
 
 import OrderDetail from "../../components/Home/OrderDetail";
 
-const NotiOrderDetail = () => {
-  const { serviceName, items, totalQty, totalPrice, fromHistory } =
-    props.route.params;
+const NotiOrderDetail = (props) => {
+  const {
+    orderId,
+    serviceName,
+    paymentType,
+    items,
+    timestamp,
+    totalQty,
+    totalPrice,
+    fromNoti,
+  } = props.route.params;
+  const oid = orderId.substring(orderId.length - 5, orderId.length);
+  // Change timestamp to date & time
+  const dateString = String(new Date(timestamp).toDateString()); // 'Thu Jan 20 2022'
+  const timeString = String(new Date(timestamp).toLocaleTimeString()); // '4:29:17 AM'
+  const time = dateString + " at " + timeString;
   return (
     <View style={style.screen}>
       <View style={style.container}>
         <OrderDetail
+          orderId={oid}
           items={items}
           serviceName={serviceName}
+          paymentType={paymentType}
+          time={time}
           totalQty={totalQty}
           totalPrice={totalPrice}
-          fromHistory={fromHistory}
+          fromNoti={fromNoti}
           pressed={() =>
             props.navigation.navigate("payment", {
               serviceName,

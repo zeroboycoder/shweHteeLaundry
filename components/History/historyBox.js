@@ -13,6 +13,7 @@ import Color from "../../constant/Color";
 // Needed props
 // id, date, number of clothes, price, status (pending or delivered)
 export default function historyBox(props) {
+  console.log(props.status);
   // choose the touchable component with the based OS
   let TouchableComponent = TouchableOpacity;
   if (Platform.OS === "android" && Platform.Version >= 21) {
@@ -20,15 +21,18 @@ export default function historyBox(props) {
   }
 
   // check the status condition
-  let status = (
-    <View style={style.delivered}>
-      <Text style={style.statusText}>Delivered</Text>
-    </View>
-  );
-  if (props.status === "pending") {
+  let status;
+  if (props.status === "confirmed") {
     status = (
-      <View style={style.pending}>
-        <Text style={style.statusText}>Pending</Text>
+      <View style={style.confirmed}>
+        <Text style={style.statusText}>Comfirmed</Text>
+      </View>
+    );
+  }
+  if (props.status === "finished") {
+    status = (
+      <View style={style.finished}>
+        <Text style={style.statusText}>Finished</Text>
       </View>
     );
   }
@@ -65,7 +69,7 @@ const style = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 10,
-    backgroundColor: Color.gray,
+    backgroundColor: "#ddd",
     borderRadius: 18,
   },
   firstCol: {
@@ -92,12 +96,17 @@ const style = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  delivered: {
-    padding: 3,
-    borderWidth: 1,
-    borderColor: Color.darkBlue,
+  finished: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: 80,
+    minHeight: 80,
+    backgroundColor: "#fff",
+    borderWidth: 2,
+    borderColor: "green",
+    borderRadius: 70,
   },
-  pending: {
+  confirmed: {
     justifyContent: "center",
     alignItems: "center",
     width: 80,

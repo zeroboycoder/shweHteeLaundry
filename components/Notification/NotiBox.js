@@ -13,7 +13,7 @@ const dummyDatas = {
   prepared: require("../../assets/image/noti/prepared.png"),
 };
 
-export default function NotiBox({ data }) {
+export default function NotiBox({ data, notiId, pressed }) {
   // Shortform of order id
   const oid = data.oid;
   const orderId = oid.substring(oid.length - 5, oid.length);
@@ -30,7 +30,7 @@ export default function NotiBox({ data }) {
 
   return (
     <View style={{ width: "100%" }}>
-      <TouchableCpn onPress={() => props.pressed(oid)}>
+      <TouchableCpn onPress={() => pressed(oid, notiId)}>
         <View
           style={
             data.touched ? style.container : [style.container, style.untouched]
@@ -76,7 +76,7 @@ const style = StyleSheet.create({
     backgroundColor: "#fafafa",
   },
   untouched: {
-    backgroundColor: "#e3e3e3",
+    backgroundColor: "#ccc",
     borderColor: "#777",
     borderWidth: 1,
   },

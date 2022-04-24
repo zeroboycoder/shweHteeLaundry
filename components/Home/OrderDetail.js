@@ -129,7 +129,7 @@ export default function CheckoutBox(props) {
         </View>
 
         {/* Payment Button */}
-        {props.pressed && !fromNoti && (
+        {props.pressed && !props.fromNoti && (
           <View style={style.btnContainer}>
             <TouchableOpacity style={style.btn} onPress={props.pressed}>
               <Text style={style.btnText}>Payment</Text>
