@@ -8,8 +8,8 @@ export const ONBOARDING = "ONBOARDING";
 export const onAuth = (userDatas) => async (dispatch) => {
   const uid = userDatas.uid;
   // let isAdmin = uid === "1120167971852948" ? true : false;
-  let isAdmin = uid === "115371379298586176000" ? true : false;
-  userDatas["admin"] = isAdmin;
+  // let isAdmin = uid === "115371379298586176000" ? true : false;
+  // userDatas["admin"] = isAdmin;
   try {
     const res = await axios.put(
       `https://shwe-htee-laundry-default-rtdb.asia-southeast1.firebasedatabase.app/users/${uid}.json`,

@@ -16,10 +16,25 @@ export const signInWithGoogleAsync = async (navigation) => {
     if (response.type === "success") {
       const { id, name } = response.user;
       console.log(id, name);
-      navigation.navigate("GetUserInfo", {
-        id,
-        name,
-      });
+      // Check the user is exist or not
+      const res = await axios.get(
+        `https://shwe-htee-laundry-default-rtdb.asia-southeast1.firebasedatabase.app/users/${id}.json`
+      );
+      const data = res.data;
+      if (data) {
+        return navigation.navigate("GetUserInfo", {
+          id,
+          name,
+          phno: data.phno,
+          address: data.address,
+          admin: data.admin ? data.admin : false,
+        });
+      } else {
+        navigation.navigate("GetUserInfo", {
+          id,
+          name,
+        });
+      }
     } else {
       console.log("Failed in google auth.");
     }
@@ -44,10 +59,25 @@ export const signInWithFacebookAsync = async (navigation) => {
       );
       const { id, name } = result.data;
       console.log(id, name);
-      navigation.navigate("GetUserInfo", {
-        id,
-        name,
-      });
+      // Check the user is exist or not
+      const res = await axios.get(
+        `https://shwe-htee-laundry-default-rtdb.asia-southeast1.firebasedatabase.app/users/${id}.json`
+      );
+      const data = res.data;
+      if (data) {
+        return navigation.navigate("GetUserInfo", {
+          id,
+          name,
+          phno: data.phno,
+          address: data.address,
+          admin: data.admin ? data.admin : false,
+        });
+      } else {
+        navigation.navigate("GetUserInfo", {
+          id,
+          name,
+        });
+      }
     } else {
       console.log("Fail in facebook auth.");
     }

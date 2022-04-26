@@ -12,7 +12,10 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 
 import Color from "../../constant/Color";
-import { onFetchOrderHistoryies } from "../../store/actions/service/order";
+import {
+  onFetchOrderHistoryies,
+  onDelOrder,
+} from "../../store/actions/service/order";
 import OwnerOrderBox from "../../components/History/OwnerNewOrderHistory";
 
 export default function HistoryForOwner(props) {
@@ -57,12 +60,28 @@ export default function HistoryForOwner(props) {
     setConfirmedOrders(confirmedOrders);
   };
 
-  // Change history based on isconfiredBtn
+  // Change history based on isconfiredBtn/Top Btn
   useEffect(() => {
     setLoading(true);
     fetchHistories();
     setLoading(false);
   }, [allOrderHistories]);
+
+  // Delete Order Handler
+  const deleteOrderHandler = (orderId, status) => {
+    if (status.pending) {
+      const updatedOrder = newOrders.filter(
+        (newOrder) => newOrder[0].oid !== orderId
+      );
+      setNewOrders(updatedOrder);
+    } else {
+      const updatedOrder = confirmedOrders.filter(
+        (newOrder) => newOrder[0].oid !== orderId
+      );
+      setConfirmedOrders(updatedOrder);
+    }
+    dispatch(onDelOrder(orderId));
+  };
 
   // Press go to order detail
   const pressedHandler = (items) => {
@@ -166,6 +185,7 @@ export default function HistoryForOwner(props) {
                   <OwnerOrderBox
                     {...items.item}
                     pressed={() => pressedHandler(items.item)}
+                    deleted={deleteOrderHandler}
                   />
                 )}
                 style={{ height: "100%" }}
@@ -185,6 +205,7 @@ export default function HistoryForOwner(props) {
                   <OwnerOrderBox
                     {...items.item}
                     pressed={() => pressedHandler(items.item)}
+                    deleted={deleteOrderHandler}
                   />
                 )}
                 style={{ height: "100%" }}

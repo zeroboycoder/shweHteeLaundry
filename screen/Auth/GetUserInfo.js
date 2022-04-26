@@ -29,6 +29,13 @@ Notifications.setNotificationHandler({
 // Manipulate with dispatch
 const reducer = (state, action) => {
   switch (action.type) {
+    case "CHECK_VALID": {
+      console.log("Valid : ", action.valid);
+      return {
+        ...state,
+        formIsValid: action.valid,
+      };
+    }
     case "UPDATE_INPUT": {
       const updateValues = {
         ...state.value,
@@ -50,16 +57,17 @@ const reducer = (state, action) => {
 
 export default function GetUserInfo(props) {
   const dispatch = useDispatch();
-  const { id, name } = props.route.params;
+  const { id, name, phno, address, admin } = props.route.params;
   const [userPushToken, setUserPushToken] = useState();
 
   // Create a state and dispatch for useEffect
   const [formState, formDispatch] = useReducer(reducer, {
     value: {
       uname: name,
-      phno: "",
-      address: "",
+      phno: phno ? phno : "",
+      address: address ? address : "",
     },
+    admin: admin,
     formIsValid: false,
   });
 
@@ -98,9 +106,24 @@ export default function GetUserInfo(props) {
       });
   }, []);
 
+  // Form is Valid or not
+  useEffect(() => {
+    let canClick = true;
+    for (const key in formState.value) {
+      if (key === "admin")
+        canClick = formState.value[key].trim().length > 0 && canClick;
+    }
+    return formDispatch({ type: "CHECK_VALID", valid: canClick });
+  }, []);
+
   // If submitd form
   const onSubmitForm = () => {
-    const userDatas = { ...formState.value, uid: id, token: userPushToken };
+    const userDatas = {
+      ...formState.value,
+      uid: id,
+      token: userPushToken,
+      admin: formState.admin,
+    };
     dispatch(onAuth(userDatas));
   };
 

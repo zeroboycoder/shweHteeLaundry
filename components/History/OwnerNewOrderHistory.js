@@ -9,8 +9,10 @@ import {
   StyleSheet,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useDispatch } from "react-redux";
 
 export default function OwnerNewOrderHistory(props) {
+  const dispatch = useDispatch();
   // Get Datas from props
   const datas = props[0];
   const oid = datas.oid;
@@ -36,7 +38,7 @@ export default function OwnerNewOrderHistory(props) {
         {
           text: "Confirm",
           style: "default",
-          onPress: () => console.log("Conrim an order"),
+          onPress: () => props.deleted(oid, status),
         },
       ]
     );

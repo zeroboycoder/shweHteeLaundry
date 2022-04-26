@@ -1,4 +1,8 @@
-import { ADD_ORDER, FETCH_ORDER_HISTORIES } from "../../actions/service/order";
+import {
+  ADD_ORDER,
+  FETCH_ORDER_HISTORIES,
+  DEL_ORDER,
+} from "../../actions/service/order";
 
 const initState = {
   orderHistories: [],
@@ -17,6 +21,12 @@ export default (state = initState, action) => {
       return {
         ...state,
         orderHistories: action.data,
+      };
+    }
+    case DEL_ORDER: {
+      delete state.orderHistories[action.orderId];
+      return {
+        ...state,
       };
     }
     default:

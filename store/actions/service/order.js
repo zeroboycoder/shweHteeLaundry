@@ -2,6 +2,7 @@ import axios from "axios";
 
 export const ADD_ORDER = "ADD_ORDER";
 export const FETCH_ORDER_HISTORIES = "FETCH_ORDER_HISTORIES";
+export const DEL_ORDER = "DEL_ORDER";
 
 export const onAddOrder =
   (items, serviceName, paymentType) => async (dispatch, getState) => {
@@ -48,12 +49,7 @@ export const onFetchOrderHistoryies = () => async (dispatch, getState) => {
     let history = [];
     if (!admin) {
       for (const key in resData) {
-        let data = [];
-        if (resData[key].uid === uid) {
-          data = resData[key];
-          data["oid"] = key;
-          history.unshift(data);
-        }
+        resData[key].uid === uid ? history.unshift(resData[key]) : null;
       }
     } else {
       history = resData;
@@ -65,4 +61,18 @@ export const onFetchOrderHistoryies = () => async (dispatch, getState) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const onDelOrder = (orderId) => async (dispatch) => {
+  try {
+    const res = await axios.delete(
+      `https://shwe-htee-laundry-default-rtdb.asia-southeast1.firebasedatabase.app/orders/${orderId}.json`
+    );
+    if (res.status === 200) {
+      dispatch({
+        type: DEL_ORDER,
+        orderId,
+      });
+    }
+  } catch (error) {}
 };

@@ -11,8 +11,8 @@ import {
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import * as Clipboard from "expo-clipboard";
-import * as Notifications from "expo-notifications";
 import { showMessage, hideMessage } from "react-native-flash-message";
+import axios from "axios";
 
 import PaymentDescBox from "../../components/Home/PaymentDescBox";
 import { onAddOrder } from "../../store/actions/service/order";
@@ -35,7 +35,7 @@ export default function PaymentDetail(props) {
     });
   };
 
-  const openTheApp = () => {
+  const openTheApp = async () => {
     // Open an app in play store
     const canOpen = Linking.canOpenURL(datas.appUrl);
     if (canOpen) {
@@ -44,11 +44,17 @@ export default function PaymentDetail(props) {
       // Sent local notification to customer (themself)
       schedulePushNotification("Shwe Htee", "Your order is send to owner!!!");
       // Sent push notification to owner
-      sentPushNoti(
-        "ExponentPushToken[Q5V-mfCqzgmsNsfPVUwlNV]",
-        "Shwe Htee",
-        "Receive New Order!"
-      );
+      let adminToken;
+      try {
+        const res = await axios.get(
+          `https://shwe-htee-laundry-default-rtdb.asia-southeast1.firebasedatabase.app/adminPush.json`
+        );
+        const data = res.data;
+        adminToken = data.token;
+      } catch (err) {
+        throw new Error(err);
+      }
+      sentPushNoti(adminToken, "Shwe Htee", "Receive New Order!");
     } else {
       Alert.alert(
         "Can't open",
