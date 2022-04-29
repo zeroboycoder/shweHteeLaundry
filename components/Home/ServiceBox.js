@@ -3,7 +3,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function SeriveBox({ name, imgUrl, clicked }) {
   return (
-    <View style={style.container}>
+    <View>
       <TouchableOpacity activeOpacity={0.8} onPress={clicked}>
         <View style={style.box}>
           <View style={style.imgContainer}>
@@ -17,10 +17,6 @@ export default function SeriveBox({ name, imgUrl, clicked }) {
 }
 
 const style = StyleSheet.create({
-  conainer: {
-    borderRadius: 18,
-    overflow: "hidden",
-  },
   box: {
     justifyContent: "space-evenly",
     alignItems: "center",

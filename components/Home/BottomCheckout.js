@@ -1,14 +1,30 @@
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Button, View, Text, StyleSheet } from "react-native";
 
 export default function BottomCheckout(props) {
+  const [promoClothes, setPromoClothes] = useState();
+
+  useEffect(() => {
+    if (props.promoId) {
+      if (props.promoId === "p000") {
+        setPromoClothes(100);
+      }
+      if (props.promoId === "p001") {
+        setPromoClothes(20);
+      }
+    }
+  }, [props.promoId]);
+
   return (
     // Button Total Checkout
     <View style={style.bottomCheckout}>
       <View style={style.container}>
         <View style={style.row}>
-          <Text style={style.text}>Total clothes : </Text>
-          <Text style={style.text}>{props.totalQty}</Text>
+          <Text style={style.text}>Total clothes :</Text>
+          <Text style={style.text}>
+            {props.totalQty}
+            {props.promoId && " / " + promoClothes}
+          </Text>
         </View>
         <View style={style.row}>
           <Text style={style.text}>Total price : </Text>

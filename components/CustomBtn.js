@@ -10,9 +10,6 @@ import {
 
 export default function CustomBtn(props) {
   let TouchableComponent = TouchableNativeFeedback;
-  // if (Platform.OS === "android" && Platform.Version >= 21) {
-  //   TouchableComponent = TouchableNativeFeedback;
-  // }
   if (Platform.OS === "ios") {
     TouchableComponent = TouchableOpacity;
   }

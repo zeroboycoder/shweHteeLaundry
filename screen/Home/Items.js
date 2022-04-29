@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { ActivityIndicator, FlatList, View } from "react-native";
+import { FlatList, View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
 import CategoryRow from "../../components/Home/CategoryRow";
@@ -15,6 +15,7 @@ export default function Items(props) {
   // Get the category id from navigation params
   const serviceName = props.route.params.serviceName;
   const cateId = props.route.params.cid;
+  const promoId = props.route.params.promoId;
   // Create a local state
   const [loading, setLoading] = useState(false);
   const [cid, setCid] = useState(cateId);
@@ -79,31 +80,28 @@ export default function Items(props) {
         backgroundColor: "#fff",
       }}
     >
-      {loading ? (
-        <ActivityIndicator size="large" color="red" />
-      ) : (
-        <View style={{ width: "100%", alignItems: "center" }}>
-          <CategoryRow pressed={cateRowPressedHandler} />
-          <View style={{ marginBottom: 270 }}>
-            <FlatList
-              data={filterItems}
-              renderItem={(items) => (
-                <ItemBox
-                  item={items.item}
-                  added={addToCart}
-                  removed={removeFromCart}
-                />
-              )}
-              showsVerticalScrollIndicator={false}
-            />
-          </View>
-          <BottomCheckout
-            totalQty={totalQty}
-            totalPrice={totalPrice}
-            pressed={checkoutBtnHandler}
+      <View style={{ width: "100%", alignItems: "center" }}>
+        <CategoryRow pressed={cateRowPressedHandler} />
+        <View style={{ marginBottom: 270 }}>
+          <FlatList
+            data={filterItems}
+            renderItem={(items) => (
+              <ItemBox
+                item={items.item}
+                added={addToCart}
+                removed={removeFromCart}
+              />
+            )}
+            showsVerticalScrollIndicator={false}
           />
         </View>
-      )}
+        <BottomCheckout
+          totalQty={totalQty}
+          totalPrice={totalPrice}
+          promoId={promoId}
+          pressed={checkoutBtnHandler}
+        />
+      </View>
     </View>
   );
 }

@@ -7,6 +7,7 @@ import { categoriesDatas } from "../../data/dummyDatas";
 
 export default function Categories(props) {
   const serviceName = props.route.params.serviceName;
+  const promoId = props.route.params.promoId;
   const cateDatasArr = [];
   for (const id in categoriesDatas) {
     cateDatasArr.push({ id: id, ...categoriesDatas[id] });
@@ -26,6 +27,7 @@ export default function Categories(props) {
                   serviceName,
                   categoryName: category.name,
                   cid: category.id,
+                  promoId,
                 })
               }
             />

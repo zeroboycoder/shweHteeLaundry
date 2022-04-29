@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Shwe Htee Laundry",
-    "description" : "This is a best laundry service.",
+    "description": "This is a best laundry service.",
     "slug": "shweHteeLaundry",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -18,15 +18,16 @@
       "**/*"
     ],
     "ios": {
-      "bundleIdentifier" : "com.shwehtee.laundry",
-      "buildNumber" : "1.0.0",
+      "bundleIdentifier": "com.shwehtee.laundry",
+      "buildNumber": "1.0.0",
       "supportsTablet": true
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "android" : {
-      "useNextNotificationsApi" : true
+    "android": {
+      "useNextNotificationsApi": true,
+      "package": "com.shwehtee.laundry"
     },
     "plugins": [
       [

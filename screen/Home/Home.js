@@ -16,6 +16,12 @@ import PromoBox from "../../components/Home/PromoBox";
 import { serviceDummyDatas, promoDummyDatas } from "../../data/dummyDatas";
 
 export default function Home(props) {
+  const goToCategoryHandler = (serviceName, promoId) => {
+    props.navigation.navigate("categories", {
+      serviceName,
+      promoId,
+    });
+  };
   return (
     <View style={style.screen}>
       {/* Greeting Section */}
@@ -50,12 +56,7 @@ export default function Home(props) {
               key={service.name}
               name={service.name}
               imgUrl={service.imgUrl}
-              clicked={() =>
-                props.navigation.navigate("categories", {
-                  id: service.id,
-                  serviceName: service.name,
-                })
-              }
+              clicked={() => goToCategoryHandler(service.name)}
             />
           ))}
         </ScrollView>
@@ -76,6 +77,7 @@ export default function Home(props) {
               imgUrl={promo.imgUrl}
               desc={promo.desc}
               promoText={promo.promoText}
+              clicked={() => goToCategoryHandler(promo.title, promo.id)}
             />
           ))}
         </ScrollView>

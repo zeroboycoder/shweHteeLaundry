@@ -1,23 +1,41 @@
 import React from "react";
-import { Image, View, Text, StyleSheet } from "react-native";
+import {
+  Image,
+  Platform,
+  View,
+  Text,
+  TouchableOpacity,
+  TouchableNativeFeedback,
+  StyleSheet,
+} from "react-native";
 
 import Color from "../../constant/Color";
 
-export default function PromoBox({ imgUrl, title, desc, promoText }) {
+export default function PromoBox({ imgUrl, title, desc, promoText, clicked }) {
+  // choose the touchable component with the based OS
+  let TouchableComponent = TouchableOpacity;
+  if (Platform.OS === "android" && Platform.Version >= 21) {
+    TouchableComponent = TouchableNativeFeedback;
+  }
+
   return (
-    <View style={style.container}>
-      <View style={style.imgContainer}>
-        <Image source={imgUrl} alt="Promo Image" style={style.img} />
-      </View>
-      <View>
-        <View>
-          <Text style={style.title}>{title}</Text>
-          <Text style={style.desc}>{desc}</Text>
+    <View>
+      <TouchableComponent onPress={clicked}>
+        <View style={style.container}>
+          <View style={style.imgContainer}>
+            <Image source={imgUrl} alt="Promo Image" style={style.img} />
+          </View>
+          <View>
+            <View>
+              <Text style={style.title}>{title}</Text>
+              <Text style={style.desc}>{desc}</Text>
+            </View>
+            <View style={style.promoBox}>
+              <Text style={style.promoText}>{promoText}</Text>
+            </View>
+          </View>
         </View>
-        <View style={style.promoBox}>
-          <Text style={style.promoText}>{promoText}</Text>
-        </View>
-      </View>
+      </TouchableComponent>
     </View>
   );
 }

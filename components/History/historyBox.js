@@ -13,7 +13,6 @@ import Color from "../../constant/Color";
 // Needed props
 // id, date, number of clothes, price, status (pending or delivered)
 export default function historyBox(props) {
-  console.log(props.status);
   // choose the touchable component with the based OS
   let TouchableComponent = TouchableOpacity;
   if (Platform.OS === "android" && Platform.Version >= 21) {

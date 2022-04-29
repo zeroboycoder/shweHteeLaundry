@@ -20,12 +20,14 @@ export const serviceDummyDatas = [
 // Promotions Datas
 export const promoDummyDatas = [
   {
+    id: "p000",
     imgUrl: require("../assets/image/home/promo_0.png"),
     title: "အဝတ်လျှော် + မီးပူတိုက်",
     desc: "အထည် ၁၀၀",
     promoText: "၂၂,၀၀၀ ကျပ်",
   },
   {
+    id: "p001",
     imgUrl: require("../assets/image/home/promo_1.png"),
     title: "အဝတ်လျှော် + မီးပူတိုက်",
     desc: "အထည် ၂၀",
