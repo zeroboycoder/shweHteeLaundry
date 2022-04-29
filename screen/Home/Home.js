@@ -43,7 +43,7 @@ export default function Home(props) {
         <ScrollView
           horizontal={true}
           showsHorizontalScrollIndicator={false}
-          style={style.serviceBoxs}
+          contentContainerStyle={style.serviceBoxs}
         >
           {serviceDummyDatas.map((service) => (
             <ServiceBox
@@ -161,6 +161,7 @@ const style = StyleSheet.create({
   },
   serviceBoxs: {
     flex: 1,
+    justifyContent: "space-around",
   },
 
   // Promotion

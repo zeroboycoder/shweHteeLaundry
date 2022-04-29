@@ -15,7 +15,7 @@ import Color from "../constant/Color";
 import AuthStart from "../screen/Auth/AuthStart";
 import ChooseAuth from "../screen/Auth/ChooseAuth";
 import GetUserInfo from "../screen/Auth/GetUserInfo";
-// Tab Screens
+// Home Screens
 import Home, { HomeNavOptions } from "../screen/Home/Home";
 import Categories, { categoriesNavOptions } from "../screen/Home/Categories";
 import Items, { itemsNavOptions } from "../screen/Home/Items";
@@ -25,11 +25,11 @@ import PaymentDetail, {
   paymentDetaileNavOptions,
 } from "../screen/Home/PaymentDetail";
 // History
-import History from "../screen/History/History";
+import History, { historyNavOptions } from "../screen/History/History";
 import HistoryForOwner from "../screen/History/HistoryForOwner";
 import OrderDetail from "../screen/History/OrderDetail";
 // Notification
-import Notification from "../screen/Notification/Noti";
+import Notification, { notiNavOptions } from "../screen/Notification/Noti";
 import NotiOrderDetail from "../screen/Notification/NotiOrderDetail";
 // Profile Screen
 import Profile, { ProfileNavOptions } from "../screen/Profile/Profile";
@@ -117,7 +117,7 @@ const HistoryNavigator = () => {
       <Stack.Screen
         name="history"
         component={admin ? HistoryForOwner : History}
-        options={{ headerTitle: "History" }}
+        options={historyNavOptions}
       />
       <Stack.Screen
         name="orderDetail"
@@ -136,7 +136,7 @@ const NotiNavigator = () => {
       <Stack.Screen
         name="noti"
         component={Notification}
-        options={{ headerTitle: "Notification" }}
+        options={notiNavOptions}
       />
       <Stack.Screen
         name="notiOrderDetail"

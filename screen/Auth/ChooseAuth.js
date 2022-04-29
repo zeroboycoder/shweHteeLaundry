@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import {
+  ActivityIndicator,
   Dimensions,
   Image,
   Platform,
@@ -14,10 +15,22 @@ import Color from "../../constant/Color";
 import * as SocialAuth from "../../util/socialAuth";
 
 export default function ChooseAuth(props) {
+  const [showLoading, setShowLoading] = useState({ name: "" });
   let TouchableComponent = TouchableOpacity;
   if (Platform.OS === "android" && Platform.Version >= 21) {
     TouchableComponent = TouchableNativeFeedback;
   }
+
+  const clickHanlder = (loginName) => {
+    if (loginName === "google") {
+      SocialAuth.signInWithGoogleAsync(props.navigation);
+      setShowLoading({ name: "google" });
+    }
+    if (loginName === "facebook") {
+      SocialAuth.signInWithFacebookAsync(props.navigation);
+      setShowLoading({ name: "facebook" });
+    }
+  };
 
   return (
     <View style={style.screen}>
@@ -29,28 +42,40 @@ export default function ChooseAuth(props) {
         <View style={style.social}>
           {/* Google Login Icon */}
           <View style={{ borderRadius: 25, overflow: "hidden" }}>
-            <TouchableComponent onPress={() => SocialAuth.signInWithGoogleAsync(props.navigation)}>
+            <TouchableComponent onPress={() => clickHanlder("google")}>
               <View style={style.btnContainer}>
-                <Image
-                  source={require("../../assets/image/gg_logo.png")}
-                  alt="Google Logo"
-                  style={style.socialIcon}
-                />
-                <Text style={style.btnLable}>Google</Text>
+                {showLoading.name === "google" ? (
+                  <ActivityIndicator size="small" color={Color.darkBlue} />
+                ) : (
+                  <>
+                    <Image
+                      source={require("../../assets/image/gg_logo.png")}
+                      alt="Google Logo"
+                      style={style.socialIcon}
+                    />
+                    <Text style={style.btnLable}>Google</Text>
+                  </>
+                )}
               </View>
             </TouchableComponent>
           </View>
 
           {/* Facebook Login Icon */}
           <View style={{ borderRadius: 25, overflow: "hidden" }}>
-            <TouchableComponent onPress={() => SocialAuth.signInWithFacebookAsync(props.navigation)}>
+            <TouchableComponent onPress={() => clickHanlder("facebook")}>
               <View style={style.btnContainer}>
-                <Image
-                  source={require("../../assets/image/fb_logo.png")}
-                  alt="Google Logo"
-                  style={style.socialIcon}
-                />
-                <Text style={style.btnLable}>Facebook</Text>
+                {showLoading.name === "facebook" ? (
+                  <ActivityIndicator size="small" color={Color.darkBlue} />
+                ) : (
+                  <>
+                    <Image
+                      source={require("../../assets/image/fb_logo.png")}
+                      alt="Google Logo"
+                      style={style.socialIcon}
+                    />
+                    <Text style={style.btnLable}>Facebook</Text>
+                  </>
+                )}
               </View>
             </TouchableComponent>
           </View>

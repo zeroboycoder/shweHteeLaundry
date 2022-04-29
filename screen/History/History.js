@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
+import { Feather } from "@expo/vector-icons";
 
 import HistoryBox from "../../components/History/historyBox";
 import { onFetchOrderHistoryies } from "../../store/actions/service/order";
@@ -52,12 +53,31 @@ export default function History(props) {
     );
   }
 
-  return <View style={style.screen}>{historyBox}</View>;
+  return (
+    <View style={style.screen}>
+      {orderHistories.length <= 0 ? (
+        <View style={style.historyTextBox}>
+          <Text style={style.historyText}>History မရှိသေးပါ။</Text>
+        </View>
+      ) : (
+        historyBox
+      )}
+    </View>
+  );
 }
 
-export const historyNavOptions = () => {
+export const historyNavOptions = (navData) => {
   return {
-    headerTitle: "Order History",
+    headerTitle: "History",
+    headerRight: () => (
+      <Feather
+        name="menu"
+        size={24}
+        color="white"
+        style={{ marginRight: 24 }}
+        onPress={() => navData.navigation.toggleDrawer()}
+      />
+    ),
   };
 };
 
@@ -66,5 +86,15 @@ const style = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: "#fff",
+  },
+  historyTextBox: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  historyText: {
+    color: "#072ac8",
+    fontFamily: "pyidaungsu",
+    fontSize: 15,
   },
 });

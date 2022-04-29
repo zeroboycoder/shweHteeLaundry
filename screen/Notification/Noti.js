@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FlatList, View, Text, StyleSheet } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
+import { Feather } from "@expo/vector-icons";
 
 import NotiBox from "../../components/Notification/NotiBox";
 import { fetchNotis, updateNoti } from "../../store/actions/service/noti";
@@ -52,27 +52,58 @@ export default function Noti(props) {
 
   return (
     <View style={style.screen}>
-      <FlatList
-        onRefresh={fetchNotiHandler}
-        refreshing={refresh}
-        keyExtractor={(item, index) => index}
-        data={Object.keys(notis)}
-        renderItem={(items) => (
-          <NotiBox
-            data={notis[items.item]}
-            notiId={items.item}
-            pressed={goToOrderDetail}
-          />
-        )} // items.item === notiId
-      />
+      {notis === null ? (
+        <View style={style.notiTextBox}>
+          <Text style={style.notiText}>Notification မရှိသေးပါ။</Text>
+        </View>
+      ) : (
+        <FlatList
+          onRefresh={fetchNotiHandler}
+          refreshing={refresh}
+          keyExtractor={(item, index) => index}
+          data={Object.keys(notis)}
+          renderItem={(items) => (
+            <NotiBox
+              data={notis[items.item]}
+              notiId={items.item}
+              pressed={goToOrderDetail}
+            />
+          )} // items.item === notiId
+        />
+      )}
     </View>
   );
 }
+
+export const notiNavOptions = (navData) => {
+  return {
+    headerTitle: "Notifications",
+    headerRight: () => (
+      <Feather
+        name="menu"
+        size={24}
+        color="white"
+        style={{ marginRight: 24 }}
+        onPress={() => navData.navigation.toggleDrawer()}
+      />
+    ),
+  };
+};
 
 const style = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: "#fff",
     padding: 16,
+  },
+  notiTextBox: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  notiText: {
+    color: "#072ac8",
+    fontFamily: "pyidaungsu",
+    fontSize: 15,
   },
 });
