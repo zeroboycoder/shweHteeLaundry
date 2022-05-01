@@ -49,7 +49,12 @@ export const onFetchOrderHistoryies = () => async (dispatch, getState) => {
     let history = [];
     if (!admin) {
       for (const key in resData) {
-        resData[key].uid === uid ? history.unshift(resData[key]) : null;
+        if (resData[key].uid === uid) {
+          let tempData = {};
+          tempData = { ...resData[key] };
+          tempData["oid"] = key;
+          history.unshift(tempData);
+        }
       }
     } else {
       history = resData;

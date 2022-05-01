@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FlatList, View, Text, StyleSheet } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
+import { showMessage, hideMessage } from "react-native-flash-message";
 import { Feather } from "@expo/vector-icons";
 
 import NotiBox from "../../components/Notification/NotiBox";
@@ -36,8 +37,15 @@ export default function Noti(props) {
       dispatch(updateNoti(uid, notiId));
     }
 
-    const result = orders.filter((order) => order.oid === orderId);
-    const data = result[0];
+    const orderResult = orders.filter((order) => order.oid === orderId);
+    const data = orderResult[0];
+    if (!data) {
+      showMessage({
+        message: "Your order is deleted by owner",
+        type: "warning",
+      });
+      return;
+    }
     props.navigation.navigate("notiOrderDetail", {
       orderId: orderId,
       serviceName: data.serviceName,

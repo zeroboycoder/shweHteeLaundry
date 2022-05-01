@@ -20,32 +20,32 @@ export default function History(props) {
 
   // Order History Box
   const historyBox = [];
-  for (const key in orderHistories) {
-    const oid = orderHistories[key].oid;
+  for (let i = 0; i < orderHistories.length; i++) {
+    const oid = orderHistories[i].oid;
     const orderId = oid.substring(oid.length - 5, oid.length);
     // Change timestamp to date & time
-    const timestamp = orderHistories[key].timestamp;
+    const timestamp = orderHistories[i].timestamp;
     const dateString = String(new Date(timestamp).toDateString()); // 'Thu Jan 20 2022'
     const timeString = String(new Date(timestamp).toLocaleTimeString()); // '4:29:17 AM'
     const time = dateString + " at " + timeString;
 
     historyBox.push(
       <HistoryBox
-        key={key}
+        key={i}
         orderId={orderId}
-        status={orderHistories[key].status}
+        status={orderHistories[i].status}
         time={time}
-        totalQty={orderHistories[key].totalQty}
-        totalPrice={orderHistories[key].totalPrice}
+        totalQty={orderHistories[i].totalQty}
+        totalPrice={orderHistories[i].totalPrice}
         pressed={() =>
           props.navigation.navigate("orderDetail", {
             orderId: orderId,
-            status: orderHistories[key].status,
-            serviceName: orderHistories[key].serviceName,
+            status: orderHistories[i].status,
+            serviceName: orderHistories[i].serviceName,
             time: time,
-            items: orderHistories[key].items,
-            totalQty: orderHistories[key].totalQty,
-            totalPrice: orderHistories[key].totalPrice,
+            items: orderHistories[i].items,
+            totalQty: orderHistories[i].totalQty,
+            totalPrice: orderHistories[i].totalPrice,
             fromHistory: true,
           })
         }

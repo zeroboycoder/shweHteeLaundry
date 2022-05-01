@@ -21,10 +21,17 @@ export default function historyBox(props) {
 
   // check the status condition
   let status;
+  if (props.status === "pending") {
+    status = (
+      <View style={style.pending}>
+        <Text style={style.statusText}>Pending</Text>
+      </View>
+    );
+  }
   if (props.status === "confirmed") {
     status = (
       <View style={style.confirmed}>
-        <Text style={style.statusText}>Comfirmed</Text>
+        <Text style={style.statusText}>Confirmed</Text>
       </View>
     );
   }
@@ -95,14 +102,14 @@ const style = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  finished: {
+  pending: {
     justifyContent: "center",
     alignItems: "center",
     width: 80,
     minHeight: 80,
     backgroundColor: "#fff",
     borderWidth: 2,
-    borderColor: "green",
+    borderColor: Color.orange,
     borderRadius: 70,
   },
   confirmed: {
@@ -113,6 +120,16 @@ const style = StyleSheet.create({
     backgroundColor: "#fff",
     borderWidth: 2,
     borderColor: Color.yellow,
+    borderRadius: 70,
+  },
+  finished: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: 80,
+    minHeight: 80,
+    backgroundColor: "#fff",
+    borderWidth: 2,
+    borderColor: "green",
     borderRadius: 70,
   },
   statusText: {

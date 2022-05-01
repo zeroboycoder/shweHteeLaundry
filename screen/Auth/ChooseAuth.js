@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ActivityIndicator,
+  Button,
   Dimensions,
   Image,
   Platform,
@@ -10,12 +11,64 @@ import {
   TouchableNativeFeedback,
   StyleSheet,
 } from "react-native";
+import axios from "axios";
+import * as Google from "expo-auth-session/providers/google";
+import * as WebBrowser from "expo-web-browser";
+
+WebBrowser.maybeCompleteAuthSession();
 
 import Color from "../../constant/Color";
 import * as SocialAuth from "../../util/socialAuth";
 
 export default function ChooseAuth(props) {
   const [showLoading, setShowLoading] = useState({ name: "" });
+
+  // For Google Auth
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    androidClientId:
+      "224889267136-9pdatvjpdpce4n9un1qka2v15q0mdf26.apps.googleusercontent.com",
+    iosClientId:
+      "224889267136-8a10be03t8tij2p4mpn4reffibhn0eic.apps.googleusercontent.com",
+    expoClientId:
+      "224889267136-tn1cjm1g7dsgrm8iqfr7sspdreu5l2ld.apps.googleusercontent.com",
+  });
+
+  useEffect(async () => {
+    if (response?.type === "success") {
+      const accessToken = response.authentication.accessToken;
+      const userInfo = await fetch(
+        "https://www.googleapis.com/userinfo/v2/me",
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      const user = await userInfo.json();
+      const { id, name } = user;
+      console.log(id, name);
+      // Check the user is exist or not
+      const res = await axios.get(
+        `https://shwe-htee-laundry-default-rtdb.asia-southeast1.firebasedatabase.app/users/${id}.json`
+      );
+      const data = res.data;
+      if (data) {
+        return props.navigation.navigate("GetUserInfo", {
+          id,
+          name,
+          phno: data.phno,
+          address: data.address,
+          admin: data.admin ? data.admin : false,
+        });
+      } else {
+        props.navigation.navigate("GetUserInfo", {
+          id,
+          name,
+        });
+      }
+    }
+  }, [response]);
+
   let TouchableComponent = TouchableOpacity;
   if (Platform.OS === "android" && Platform.Version >= 21) {
     TouchableComponent = TouchableNativeFeedback;
@@ -23,7 +76,7 @@ export default function ChooseAuth(props) {
 
   const clickHanlder = (loginName) => {
     if (loginName === "google") {
-      SocialAuth.signInWithGoogleAsync(props.navigation);
+      promptAsync({ showInRecents: true });
       setShowLoading({ name: "google" });
     }
     if (loginName === "facebook") {
