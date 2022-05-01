@@ -4,6 +4,7 @@ import {
   Dimensions,
   Image,
   Linking,
+  Platform,
   Text,
   TouchableOpacity,
   View,
@@ -36,11 +37,13 @@ export default function PaymentDetail(props) {
   };
 
   const openTheApp = async () => {
-    // Open an app in play store
-    const canOpen = Linking.canOpenURL(datas.appUrl);
+    // Open an app in play store or App Store
+    const appUrl =
+      Platform.OS === "android" ? datas.androidAppUrl : datas.iosAppUrl;
+    const canOpen = Linking.canOpenURL(appUrl);
     if (canOpen) {
       addOrderHandler();
-      Linking.openURL(datas.appUrl);
+      Linking.openURL(appUrl);
       // Sent local notification to customer (themself)
       schedulePushNotification("Shwe Htee", "Your order is send to owner!!!");
       // Sent push notification to owner

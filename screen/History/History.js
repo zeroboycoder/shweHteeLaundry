@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { FlatList, View, Text, StyleSheet } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { Feather } from "@expo/vector-icons";
 
@@ -8,50 +8,52 @@ import { onFetchOrderHistoryies } from "../../store/actions/service/order";
 
 export default function History(props) {
   const dispatch = useDispatch();
+  const [refresh, setRefresh] = useState(false);
   // Fetch item from store
   const orderHistories = useSelector((state) => state.order.orderHistories);
-  for (const key in orderHistories) {
-    console.log("Uid : ", orderHistories[key].uid);
-  }
 
-  useEffect(() => {
+  // Fetch order Histories
+  const fetchOrdersHandler = () => {
     dispatch(onFetchOrderHistoryies());
-  }, [dispatch]);
+  };
 
-  // Order History Box
-  const historyBox = [];
-  for (let i = 0; i < orderHistories.length; i++) {
-    const oid = orderHistories[i].oid;
+  useEffect(fetchOrdersHandler, [dispatch]);
+
+  // Render Order History Box
+  const RenderHistoryBox = ({ order }) => {
+    const oid = order.oid;
+    if (!oid) {
+      return null;
+    }
     const orderId = oid.substring(oid.length - 5, oid.length);
     // Change timestamp to date & time
-    const timestamp = orderHistories[i].timestamp;
+    const timestamp = order.timestamp;
     const dateString = String(new Date(timestamp).toDateString()); // 'Thu Jan 20 2022'
     const timeString = String(new Date(timestamp).toLocaleTimeString()); // '4:29:17 AM'
     const time = dateString + " at " + timeString;
-
-    historyBox.push(
+    return (
       <HistoryBox
-        key={i}
+        key={oid}
         orderId={orderId}
-        status={orderHistories[i].status}
+        status={order.status}
         time={time}
-        totalQty={orderHistories[i].totalQty}
-        totalPrice={orderHistories[i].totalPrice}
+        totalQty={order.totalQty}
+        totalPrice={order.totalPrice}
         pressed={() =>
           props.navigation.navigate("orderDetail", {
             orderId: orderId,
-            status: orderHistories[i].status,
-            serviceName: orderHistories[i].serviceName,
+            status: order.status,
+            serviceName: order.serviceName,
             time: time,
-            items: orderHistories[i].items,
-            totalQty: orderHistories[i].totalQty,
-            totalPrice: orderHistories[i].totalPrice,
+            items: order.items,
+            totalQty: order.totalQty,
+            totalPrice: order.totalPrice,
             fromHistory: true,
           })
         }
       />
     );
-  }
+  };
 
   return (
     <View style={style.screen}>
@@ -60,7 +62,14 @@ export default function History(props) {
           <Text style={style.historyText}>History မရှိသေးပါ။</Text>
         </View>
       ) : (
-        historyBox
+        <FlatList
+          keyExtractor={(item, index) => index}
+          data={orderHistories}
+          renderItem={(items) => <RenderHistoryBox order={items.item} />}
+          onRefresh={fetchOrdersHandler}
+          refreshing={refresh}
+        />
+        // historyBox
       )}
     </View>
   );
@@ -68,7 +77,7 @@ export default function History(props) {
 
 export const historyNavOptions = (navData) => {
   return {
-    headerTitle: "History",
+    headerTitle: "Histories",
     headerRight: () => (
       <Feather
         name="menu"

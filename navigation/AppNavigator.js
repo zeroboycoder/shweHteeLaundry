@@ -220,7 +220,7 @@ const drawerScreenOptions = (admin) => ({
   headerShown: false,
   drawerPosition: "right",
   drawerActiveTintColor: "#fff",
-  drawerInactiveTintColor: "#ccc",
+  drawerInactiveTintColor: admin ? "#333" : "#ccc",
   drawerStyle: {
     backgroundColor: admin ? "#ffc600" : Color.darkBlue,
   },

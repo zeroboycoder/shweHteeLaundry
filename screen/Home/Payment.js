@@ -19,8 +19,9 @@ const dummyDatas = [
     screen: "paymentDetail",
     phno: "09764704270",
     colorCode: "#2460FC",
-    appUrl:
+    androidAppUrl:
       "https://play.google.com/store/apps/details?id=com.kbzbank.kpaycustomer",
+    iosAppUrl: "https://apps.apple.com/us/app/kbzpay-customer/id1398852297",
   },
   {
     name: "Mytel pay",
@@ -29,7 +30,9 @@ const dummyDatas = [
     screen: "paymentDetail",
     phno: "09764704270",
     colorCode: "#F64FDC",
-    appUrl: "https://play.google.com/store/apps/details?id=com.mytelpay.eu",
+    androidAppUrl:
+      "https://play.google.com/store/apps/details?id=com.mytelpay.eu",
+    iosAppUrl: "https://apps.apple.com/us/app/mytelpay/id1463482161",
   },
   {
     name: "Wave pay",
@@ -38,8 +41,9 @@ const dummyDatas = [
     screen: "paymentDetail",
     phno: "09764704270",
     colorCode: "#FAF001",
-    appUrl:
+    androidAppUrl:
       "https://play.google.com/store/apps/details?id=mm.com.wavemoney.wavepay",
+    iosAppUrl: "https://apps.apple.com/us/app/wavepay/id1439175549",
   },
 ];
 
