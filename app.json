@@ -19,6 +19,7 @@
       "**/*"
     ],
     "ios": {
+      
       "bundleIdentifier": "com.shwehtee.laundry",
       "buildNumber": "1.0.0",
       "supportsTablet": true

@@ -7,9 +7,15 @@ const initState = {
 export default (state = initState, action) => {
   switch (action.type) {
     case ADD_NOTI: {
+      const updateNotis = [...state.notis];
+      updateNotis.shift(action.newNoti);
+      return {
+        ...state,
+        notis: updateNotis,
+      };
     }
     case UPDATE_NOTI: {
-      const updateNotis = { ...state.notis };
+      const updateNotis = [...state.notis];
       updateNotis[action.notiId].touched = true;
       return {
         ...state,

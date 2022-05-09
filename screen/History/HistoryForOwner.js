@@ -180,6 +180,7 @@ export default function HistoryForOwner(props) {
                 onRefresh={loadHistories}
                 refreshing={refreashing}
                 keyExtractor={(item, index) => index}
+                initialNumToRender={10}
                 data={newOrders}
                 renderItem={(items) => (
                   <OwnerOrderBox

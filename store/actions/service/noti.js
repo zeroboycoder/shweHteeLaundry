@@ -13,7 +13,7 @@ export const addNoti = (data) => async (dispatch) => {
   );
   dispatch({
     type: ADD_NOTI,
-    msg,
+    newNoti: msg,
   });
 };
 

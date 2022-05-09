@@ -47,17 +47,18 @@ export default function PaymentDetail(props) {
       // Sent local notification to customer (themself)
       schedulePushNotification("Shwe Htee", "Your order is send to owner!!!");
       // Sent push notification to owner
-      let adminToken;
+      let adminTokenArr = [];
       try {
         const res = await axios.get(
-          `https://shwe-htee-laundry-default-rtdb.asia-southeast1.firebasedatabase.app/adminPush.json`
+          `https://shwe-htee-laundry-default-rtdb.asia-southeast1.firebasedatabase.app/adminPushTokens.json`
         );
-        const data = res.data;
-        adminToken = data.token;
+        adminTokenArr = res.data;
+        adminTokenArr.map((adminToken) =>
+          sentPushNoti(adminToken.token, "Shwe Htee", "Receive New Order!")
+        );
       } catch (err) {
         throw new Error(err);
       }
-      sentPushNoti(adminToken, "Shwe Htee", "Receive New Order!");
     } else {
       Alert.alert(
         "Can't open",

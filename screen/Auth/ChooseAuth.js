@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import axios from "axios";
 import * as Google from "expo-auth-session/providers/google";
+import { showMessage, hideMessage } from "react-native-flash-message";
 import * as WebBrowser from "expo-web-browser";
 
 WebBrowser.maybeCompleteAuthSession();
@@ -46,6 +47,10 @@ export default function ChooseAuth(props) {
       );
       const user = await userInfo.json();
       const { id, name } = user;
+      showMessage({
+        message: `${id}, ${name}`,
+        type: "warning",
+      });
       console.log(id, name);
       // Check the user is exist or not
       const res = await axios.get(

@@ -1,7 +1,7 @@
 import axios from "axios";
 
-export const ADD_ORDER = "ADD_ORDER";
 export const FETCH_ORDER_HISTORIES = "FETCH_ORDER_HISTORIES";
+export const ADD_ORDER = "ADD_ORDER";
 export const DEL_ORDER = "DEL_ORDER";
 
 export const onAddOrder =
