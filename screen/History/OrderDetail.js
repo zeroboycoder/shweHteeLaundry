@@ -10,7 +10,10 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 
 import OrderDetail from "../../components/Home/OrderDetail";
-import { onFetchOrderHistoryies } from "../../store/actions/service/order";
+import {
+  onFetchOrderHistoryies,
+  onUpdateOrder,
+} from "../../store/actions/service/order";
 import { addNoti } from "../../store/actions/service/noti";
 import { sentPushNoti } from "../../util/noti";
 
@@ -66,6 +69,7 @@ export default function Checkout(props) {
         touched: false,
       },
     };
+    dispatch(onUpdateOrder(originOrderId));
     dispatch(addNoti(notiData));
   };
 

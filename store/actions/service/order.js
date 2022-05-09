@@ -2,6 +2,7 @@ import axios from "axios";
 
 export const FETCH_ORDER_HISTORIES = "FETCH_ORDER_HISTORIES";
 export const ADD_ORDER = "ADD_ORDER";
+export const UPDATE_ORDER = "UPDATE_ORDER";
 export const DEL_ORDER = "DEL_ORDER";
 
 export const onAddOrder =
@@ -66,6 +67,14 @@ export const onFetchOrderHistoryies = () => async (dispatch, getState) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const onUpdateOrder = (orderId) => async (dispatch) => {
+  console.log("oid", orderId);
+  dispatch({
+    type: UPDATE_ORDER,
+    orderId,
+  });
 };
 
 export const onDelOrder = (orderId) => async (dispatch) => {

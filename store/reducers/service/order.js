@@ -1,6 +1,7 @@
 import {
   ADD_ORDER,
   FETCH_ORDER_HISTORIES,
+  UPDATE_ORDER,
   DEL_ORDER,
 } from "../../actions/service/order";
 
@@ -21,6 +22,15 @@ export default (state = initState, action) => {
       return {
         ...state,
         orderHistories: action.data,
+      };
+    }
+    case UPDATE_ORDER: {
+      const updateOrder = state.orderHistories[action.orderId];
+      updateOrder["paymentConfirmed"] = true;
+      updateOrder["status"] = "confirmed";
+      return {
+        ...state,
+        orderHistories: updateOrder,
       };
     }
     case DEL_ORDER: {
