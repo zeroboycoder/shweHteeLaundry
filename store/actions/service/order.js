@@ -70,23 +70,20 @@ export const onFetchOrderHistoryies = () => async (dispatch, getState) => {
 };
 
 export const onUpdateOrder = (orderId, status) => async (dispatch) => {
-  if (status === "confirmed") {
-    const res = await axios.get(
-      `https://shwe-htee-laundry-default-rtdb.asia-southeast1.firebasedatabase.app/orders/${originOrderId}.json`
-    );
-    const data = res.data;
-    data.paymentConfirmed = true;
-    data.status = "confirmed";
-    setCurStatus("confirmed"); // change current status
-    await axios.put(
-      `https://shwe-htee-laundry-default-rtdb.asia-southeast1.firebasedatabase.app/orders/${originOrderId}.json`,
-      data
-    );
-  }
-  console.log("oid", orderId);
+  const res = await axios.get(
+    `https://shwe-htee-laundry-default-rtdb.asia-southeast1.firebasedatabase.app/orders/${orderId}.json`
+  );
+  const data = res.data;
+  data.paymentConfirmed = true;
+  data.status = status;
+  await axios.put(
+    `https://shwe-htee-laundry-default-rtdb.asia-southeast1.firebasedatabase.app/orders/${orderId}.json`,
+    data
+  );
   dispatch({
     type: UPDATE_ORDER,
     orderId,
+    status,
   });
 };
 

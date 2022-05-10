@@ -27,10 +27,10 @@ export default (state = initState, action) => {
     case UPDATE_ORDER: {
       const updateOrder = state.orderHistories[action.orderId];
       updateOrder["paymentConfirmed"] = true;
-      updateOrder["status"] = "confirmed";
+      updateOrder["status"] = action.status;
       return {
         ...state,
-        orderHistories: updateOrder,
+        orderHistories: [...updateOrder],
       };
     }
     case DEL_ORDER: {

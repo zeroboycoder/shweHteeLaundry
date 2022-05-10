@@ -41,6 +41,7 @@ export default function Checkout(props) {
   }, []);
 
   const confirmedHandler = async () => {
+    setCurStatus("confirmed"); // change current status
     // Sent Push Notification to user
     sentPushNoti(
       userPushToken,
@@ -58,21 +59,12 @@ export default function Checkout(props) {
         touched: false,
       },
     };
-    dispatch(onUpdateOrder(originOrderId, "confirmed"));
     dispatch(addNoti(notiData));
+    dispatch(onUpdateOrder(originOrderId, "confirmed"));
   };
 
   const finishedHandler = async () => {
-    const res = await axios.get(
-      `https://shwe-htee-laundry-default-rtdb.asia-southeast1.firebasedatabase.app/orders/${originOrderId}.json`
-    );
-    const data = res.data;
-    data.status = "finished";
     setCurStatus("finished"); // change current status
-    await axios.put(
-      `https://shwe-htee-laundry-default-rtdb.asia-southeast1.firebasedatabase.app/orders/${originOrderId}.json`,
-      data
-    );
     // Sent Push Notification to user
     sentPushNoti(
       userPushToken,
@@ -91,6 +83,7 @@ export default function Checkout(props) {
       },
     };
     dispatch(addNoti(notiData));
+    dispatch(onUpdateOrder(originOrderId, "finished"));
   };
 
   return (
