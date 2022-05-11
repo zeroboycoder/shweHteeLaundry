@@ -33,7 +33,7 @@ export default function Noti(props) {
   // Go to Order Detail based on order id in noti
   const goToOrderDetail = async (orderId, notiId) => {
     // Change touched to false
-    if (notis[notiId].touched == false) {
+    if (notis[notiId].touched === false) {
       dispatch(updateNoti(uid, notiId));
     }
 

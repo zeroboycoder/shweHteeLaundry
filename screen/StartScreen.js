@@ -9,7 +9,7 @@ import Color from "../constant/Color";
 class StartScreen extends Component {
   checkAuth = async () => {
     const userDatas = await AsyncStorage.getItem("userDatas");
-    console.log(userDatas);
+    console.log("user data : ", userDatas);
     if (userDatas === null) {
       console.log("Tried login");
       this.props.onTriedLogin();

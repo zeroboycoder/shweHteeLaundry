@@ -10,6 +10,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
+import { Ionicons } from "@expo/vector-icons";
 
 import Color from "../../constant/Color";
 import {
@@ -173,9 +174,23 @@ export default function HistoryForOwner(props) {
         <View style={style.body}>
           {!isconfirmedBtn ? (
             <>
-              <Text style={style.counterText}>
-                New Orders : {newOrders.length}
-              </Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  paddingHorizontal: 6,
+                }}
+              >
+                <Text style={style.counterText}>
+                  New Orders : {newOrders.length}
+                </Text>
+                <Ionicons
+                  name="reload"
+                  size={24}
+                  color="black"
+                  onPress={loadHistories}
+                />
+              </View>
               <FlatList
                 onRefresh={loadHistories}
                 refreshing={refreashing}
@@ -194,9 +209,23 @@ export default function HistoryForOwner(props) {
             </>
           ) : (
             <>
-              <Text style={style.counterText}>
-                Unfinish Orders : {unfinishedOrders}
-              </Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  paddingHorizontal: 6,
+                }}
+              >
+                <Text style={style.counterText}>
+                  Unfinish Orders : {unfinishedOrders}
+                </Text>
+                <Ionicons
+                  name="reload"
+                  size={24}
+                  color="black"
+                  onPress={loadHistories}
+                />
+              </View>
               <FlatList
                 onRefresh={loadHistories}
                 refreshing={refreashing}

@@ -18,6 +18,7 @@ export const onAuth = (userDatas) => async (dispatch) => {
     if (res.status !== 200) {
       throw new Error("Error in adding user");
     }
+    console.log("user : ", res.data);
     dispatch({
       type: AUTH,
       userDatas: res.data,

@@ -15,7 +15,7 @@ export default (state = initState, action) => {
       };
     }
     case UPDATE_NOTI: {
-      const updateNotis = [...state.notis];
+      const updateNotis = { ...state.notis };
       updateNotis[action.notiId].touched = true;
       return {
         ...state,
