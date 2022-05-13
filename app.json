@@ -19,7 +19,6 @@
       "**/*"
     ],
     "ios": {
-      
       "bundleIdentifier": "com.shwehtee.laundry",
       "buildNumber": "1.0.0",
       "supportsTablet": true
@@ -29,7 +28,8 @@
     },
     "android": {
       "useNextNotificationsApi": true,
-      "package": "com.shwehtee.laundry"
+      "package": "com.shwehtee.laundry",
+      "googleServicesFile": "./google-services.json"
     },
     "plugins": [
       [

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { Alert, View, Text, TouchableOpacity } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
@@ -8,8 +8,9 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 import { Entypo, FontAwesome5, Ionicons } from "@expo/vector-icons";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
+import { onLogout } from "../store/actions/user/auth";
 import Color from "../constant/Color";
 // Auth Screens
 import AuthStart from "../screen/Auth/AuthStart";
@@ -226,49 +227,95 @@ const drawerScreenOptions = (admin) => ({
   },
 });
 
-const CustomDrawerContent = (props) => (
-  <DrawerContentScrollView {...props}>
-    <View
-      style={{
-        margin: 10,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
+const CustomDrawerContent = (props) => {
+  const dispatch = useDispatch();
+  const { admin, uname } = useSelector((store) => store.auth);
+
+  const logoutBtnHandler = () => {
+    Alert.alert("Logout?", "App ကနေ ထွက်မှာသေချာလား?", [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Logout",
+        style: "destructive",
+        onPress: () => dispatch(onLogout()),
+      },
+    ]);
+  };
+  return (
+    <DrawerContentScrollView {...props}>
       <View
         style={{
-          width: 70,
-          height: 70,
-          alignItems: "center",
+          margin: 10,
           justifyContent: "center",
-          backgroundColor: "#fff",
-          borderRadius: 70,
+          alignItems: "center",
         }}
       >
-        <Text
+        <View
           style={{
-            fontFamily: "pyidaungsu-bold",
-            fontSize: 24,
-            color: "#000",
+            width: 70,
+            height: 70,
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "#fff",
+            borderRadius: 70,
           }}
         >
-          P
+          <Text
+            style={{
+              fontFamily: "pyidaungsu-bold",
+              fontSize: 24,
+              color: "#000",
+            }}
+          >
+            {uname.split("")[0]}
+          </Text>
+        </View>
+        <Text
+          style={{
+            color: "#fff",
+            fontFamily: "pyidaungsu-bold",
+            fontSize: 18,
+            marginTop: 7,
+          }}
+        >
+          {props.uname}
         </Text>
       </View>
-      <Text
+      <DrawerItemList {...props} />
+      <View
         style={{
-          color: "#fff",
-          fontFamily: "pyidaungsu-bold",
-          fontSize: 18,
-          marginTop: 7,
+          marginHorizontal: 10,
+          marginVertical: 5,
+          justifyContent: "center",
+          height: 40,
+          width: "100%",
         }}
       >
-        {props.uname}
-      </Text>
-    </View>
-    <DrawerItemList {...props} />
-  </DrawerContentScrollView>
-);
+        <TouchableOpacity onPress={logoutBtnHandler}>
+          <Text
+            style={
+              admin
+                ? {
+                    textAlignVertical: "center",
+                    color: "black",
+                    height: "100%",
+                    padding: 10,
+                  }
+                : {
+                    textAlignVertical: "center",
+                    color: "white",
+                    height: "100%",
+                    padding: 10,
+                  }
+            }
+          >
+            Logout
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </DrawerContentScrollView>
+  );
+};
 
 export const DrawerNavigator = () => {
   const { admin, uname } = useSelector((store) => store.auth);
@@ -289,7 +336,7 @@ export const DrawerNavigator = () => {
         component={ProfileNavigator}
         options={{ drawerLabel: "Profile" }}
       />
-      <Drawer.Screen name="Logout" component={Logout} />
+      {/* <Drawer.Screen name="Logout" component={Logout} /> */}
     </Drawer.Navigator>
   );
 };

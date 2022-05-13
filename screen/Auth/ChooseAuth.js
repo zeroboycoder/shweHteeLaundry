@@ -58,9 +58,10 @@ export default function ChooseAuth(props) {
       );
       const data = res.data;
       if (data) {
+        const uname = data.uname ? data.uname : name;
         return props.navigation.navigate("GetUserInfo", {
           id,
-          name,
+          name: uname,
           phno: data.phno,
           address: data.address,
           admin: data.admin ? data.admin : false,

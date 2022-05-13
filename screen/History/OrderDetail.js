@@ -41,27 +41,26 @@ export default function Checkout(props) {
   }, []);
 
   const confirmedHandler = async () => {
-    // setCurStatus("confirmed"); // change current status
+    setCurStatus("confirmed"); // change current status
     // Sent Push Notification to user
-    console.log(userPushToken);
     sentPushNoti(
       userPushToken,
       "Confirmed Your Payment",
       "Your payment is confirmed..."
     );
     // Add Noti to database
-    // const notiData = {
-    //   uid: uid,
-    //   msg: {
-    //     oid: originOrderId,
-    //     msg: "Your Payment is confirmed!!!",
-    //     timestamp: new Date().getTime(),
-    //     imgCode: "confirmed",
-    //     touched: false,
-    //   },
-    // };
-    // dispatch(addNoti(notiData));
-    // dispatch(onUpdateOrder(originOrderId, "confirmed"));
+    const notiData = {
+      uid: uid,
+      msg: {
+        oid: originOrderId,
+        msg: "Your Payment is confirmed!!!",
+        timestamp: new Date().getTime(),
+        imgCode: "confirmed",
+        touched: false,
+      },
+    };
+    dispatch(addNoti(notiData));
+    dispatch(onUpdateOrder(originOrderId, "confirmed"));
   };
 
   const finishedHandler = async () => {

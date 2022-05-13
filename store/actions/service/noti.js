@@ -34,8 +34,13 @@ export const fetchNotis = () => async (dispatch, getState) => {
     `https://shwe-htee-laundry-default-rtdb.asia-southeast1.firebasedatabase.app/notis/${uid}.json`
   );
   const data = res.data;
+  let newObj = {};
+  Object.keys(data)
+    .sort()
+    .reverse()
+    .forEach((key) => (newObj[key] = data[key]));
   dispatch({
     type: FETCH_NOTI,
-    data,
+    data: newObj,
   });
 };

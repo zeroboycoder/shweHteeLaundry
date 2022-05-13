@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "224889267136",
+    "firebase_url": "https://shwe-htee-laundry-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "shwe-htee-laundry",
+    "storage_bucket": "shwe-htee-laundry.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:224889267136:android:15a85e9b0b477d27389e25",
+        "android_client_info": {
+          "package_name": "com.shwehtee.laundry"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "224889267136-rjgoamba1ege8mckbfmtqm7nro0itms7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6-4eVGj29_7ch6SuX31_5NWr3MV39kb0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "224889267136-rjgoamba1ege8mckbfmtqm7nro0itms7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "224889267136-8a10be03t8tij2p4mpn4reffibhn0eic.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.shwehtee.laundry"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

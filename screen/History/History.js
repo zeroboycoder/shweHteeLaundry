@@ -69,7 +69,6 @@ export default function History(props) {
           onRefresh={fetchOrdersHandler}
           refreshing={refresh}
         />
-        // historyBox
       )}
     </View>
   );
