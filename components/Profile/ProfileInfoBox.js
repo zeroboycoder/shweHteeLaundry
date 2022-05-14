@@ -27,17 +27,17 @@ const style = StyleSheet.create({
     borderRadius: 25,
   },
   label: {
-    width: "40%",
+    width: "45%",
   },
   value: {
-    width: "60%",
+    width: "55%",
   },
   labelText: {
-    fontFamily: "pyidaungsu-bold",
+    fontFamily: "pyidaungsu",
     fontSize: 16,
   },
   valueText: {
-    fontFamily: "pyidaungsu",
+    fontFamily: "pyidaungsu-bold",
     fontSize: 14,
   },
 });

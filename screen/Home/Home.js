@@ -110,10 +110,7 @@ const style = StyleSheet.create({
     justifyContent: "space-between",
   },
 
-  // Greeting
-  greetingContainer: {
-    // marginVertical: 16,
-  },
+  //
   greetingTitle: {
     fontFamily: "pyidaungsu-bold",
     fontSize: 20,
@@ -121,11 +118,13 @@ const style = StyleSheet.create({
     color: Color.darkBlue,
   },
   greetingBody: {
+    width: Dimensions.get("screen").width,
+    position: "relative",
+    left: -16,
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#f1f1f1",
     padding: 16,
-    borderRadius: 16,
   },
   imgContiner: {
     width: 100,
