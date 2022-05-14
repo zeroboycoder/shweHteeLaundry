@@ -23,7 +23,7 @@ export default function Profile() {
   return (
     <View style={style.screen}>
       <View style={style.nameCircle}>
-        <Text style={style.name}>P</Text>
+        <Text style={style.name}>{uname.split("")[0]}</Text>
       </View>
       <View style={style.infos}>{profileInfos}</View>
     </View>
