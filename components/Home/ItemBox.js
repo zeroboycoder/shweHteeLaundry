@@ -67,14 +67,14 @@ const style = StyleSheet.create({
   },
   // Service Text
   textContainer: {
-    flex: 0.33,
+    flex: 0.28,
   },
   serviceText: {
     fontFamily: "pyidaungsu",
     fontSize: 14,
   },
   pickerContainer: {
-    flex: 0.37,
+    flex: 0.45,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",

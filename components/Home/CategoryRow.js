@@ -30,7 +30,15 @@ export default function CategoryRow(props) {
     return (
       <TouchableOpacity key={item.id} onPress={() => props.pressed(item.id)}>
         <View style={style.cateBox}>
-          <Text style={style.name}>{item.name}</Text>
+          <Text
+            style={
+              props.currentCid === item.id
+                ? { ...style.name, ...style.activeText }
+                : { ...style.name }
+            }
+          >
+            {item.name}
+          </Text>
           {item.numberOfItem < 1 ? (
             <View style={{ ...style.numBox, ...style.numBoxWithGray }}>
               <Text style={style.num}>{item.numberOfItem}</Text>
@@ -72,6 +80,10 @@ const style = StyleSheet.create({
   name: {
     fontFamily: "pyidaungsu-bold",
     fontSize: 15,
+    color: Color.black,
+  },
+  activeText: {
+    color: Color.darkBlue,
   },
   numBox: {
     justifyContent: "center",

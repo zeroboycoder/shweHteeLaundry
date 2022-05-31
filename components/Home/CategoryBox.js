@@ -36,7 +36,7 @@ const style = StyleSheet.create({
   container: {
     width: 125,
     height: 125,
-    margin: 25,
+    margin: 15,
     borderWidth: 1,
     borderColor: Color.darkBlue,
     borderRadius: 20,
@@ -57,8 +57,8 @@ const style = StyleSheet.create({
   },
   text: {
     fontFamily: "pyidaungsu",
-    fontSize: 14,
-    marginTop: 4,
+    fontSize: 12,
+    marginTop: 3,
     textAlign: "center",
   },
 });

@@ -3,7 +3,7 @@
     "name": "Shwe Htee Laundry",
     "description": "This is a best laundry service.",
     "slug": "shweHteeLaundry",
-    "scheme" : "https",
+    "scheme" : "myapp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

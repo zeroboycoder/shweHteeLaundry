@@ -81,7 +81,7 @@ export default function Items(props) {
       }}
     >
       <View style={{ width: "100%", alignItems: "center" }}>
-        <CategoryRow pressed={cateRowPressedHandler} />
+        <CategoryRow currentCid={cid} pressed={cateRowPressedHandler} />
         <View style={{ marginBottom: 270 }}>
           <FlatList
             data={filterItems}
